@@ -2,4 +2,7 @@
 
 Commande git :
 
-git pull -> git commit -> git push
+git config user.name nomDeCompte
+git config user.mail mailDuCompte
+
+git pull -> git qdd . -> git commit -> git push
