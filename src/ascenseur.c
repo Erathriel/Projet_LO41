@@ -53,6 +53,6 @@ static void ascenseurInit(Ascenseur *this)
 	this->etagecourant=0;
 	this->etagedepart=0;
 	this->etagecible=0;
-	this->capacite=10
+	this->capacite=10;
 	this->true;
 }

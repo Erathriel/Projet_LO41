@@ -23,6 +23,16 @@ typedef struct Borne
 	
 } Borne;
 
+void goTo(Ascenseur asc){
+	if (asc.utilisable)
+	{
+		
+	}
+	else {
+		printf("Error : Ascenseur Inutilisable\n");
+	}
+}
+
 int main(int argc, char const *argv[])
 {
 	Ascenseur asc1;
