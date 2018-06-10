@@ -31,23 +31,35 @@ void goTo(Ascenseur asc){
 	{
 		if (asc.etageDepart<asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
-			for (int i = asc.etageDepart; i < asc.etageCible+1; ++i)
+			for (int i = asc.etageDepart; i < asc.etageCible; ++i)
 			{
-				asc.etat=1
+				asc.etat=1;
 				asc.etageCourant++;
 				asc.etat=2;
 				if (asc.etat==2)
 				{
 					printf("Arret a l'etage : %d\n", asc.etageCourant);
-					wait(60);
+					wait(100000);
 					printf("Reprise de chemin\n");
 				}
 				printf("Etage : %d\n",asc.etageCourant);
 			}
 		} 
-		else if (etageDepart>etageCible && etageCible<NB_ETAGES)
+		else if (asc.etageDepart>asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
-			// A completer
+			for (int i = asc.etageDepart; i > asc.etageCible; --i)
+			{
+				asc.etat=1;
+				asc.etageCourant--;
+				asc.etat=2;
+				if (asc.etat==2)
+				{
+					printf("Arret a l'etage : %d\n", asc.etageCourant);
+					wait(100000);
+					printf("Reprise de chemin\n");
+				}
+				printf("Etage : %d\n",asc.etageCourant);
+			}
 		} else{
 			printf("Erreur : etage cible ou depart non repertorie...\n");
 		}
@@ -65,18 +77,19 @@ int main(int argc, char const *argv[])
 
 	asc1.id=1;
 	asc1.capacite=5;
-	asc1.etageCourant=0;
-	asc1.etageDepart=etageCourant;
+	asc1.etageCourant=2;
+	asc1.etageDepart=asc1.etageCourant;
 	asc1.etageCible=5;
 	asc1.etat=0;
 	asc1.utilisable=true;
 
+	goTo(asc1);
 
 	printf("%d\n", asc1.id);
 	printf("%d\n", asc1.capacite);
+	printf("%d\n", asc1.etageCourant);
 	printf("%d\n", asc1.etageDepart);
 	printf("%d\n", asc1.etageCible);
-	printf("%d\n", asc1.etageCourant);
 	printf("%d\n", asc1.etat);
 	printf("%d\n", asc1.utilisable);
 	return 0;
