@@ -11,6 +11,7 @@
 
 #define NB_ETAGES 25
 
+// Structure definissant un ascenseur
 typedef struct Ascenseur {
 	int id;
 	int capacite;
@@ -21,14 +22,19 @@ typedef struct Ascenseur {
 	bool utilisable;
 } Ascenseur;
 
+// Structure definissant la borne
 typedef struct Borne
 {
 	
 } Borne;
 
+// Fonction permettant le deplacement de l'ascseur de haut en bas
+
 void goTo(Ascenseur asc){
+	//Cas ou l'ascenseur est utilisable
 	if (asc.utilisable)
 	{
+		// Fais monter l'ascenseur
 		if (asc.etageDepart<asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
 			for (int i = asc.etageDepart; i < asc.etageCible; ++i)
@@ -45,6 +51,7 @@ void goTo(Ascenseur asc){
 				printf("Etage : %d\n",asc.etageCourant);
 			}
 		} 
+		// Fais descendre l'ascenseur
 		else if (asc.etageDepart>asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
 			for (int i = asc.etageDepart; i > asc.etageCible; --i)
@@ -64,6 +71,7 @@ void goTo(Ascenseur asc){
 			printf("Erreur : etage cible ou depart non repertorie...\n");
 		}
 	}
+	// Cas ou l'ascenseur est en panne
 	else {
 		printf("Error : Ascenseur Inutilisable\n");
 	}
@@ -71,26 +79,30 @@ void goTo(Ascenseur asc){
 
 int main(int argc, char const *argv[])
 {
+	FILE* debugFile=NULL;
 	Ascenseur asc1;
 	//Ascenseur asc2;
 	//Ascenseur asc3;
 
+	debugFile = fopen("log.txt", "w");
+
 	asc1.id=1;
 	asc1.capacite=5;
-	asc1.etageCourant=2;
+	asc1.etageCourant=5;
 	asc1.etageDepart=asc1.etageCourant;
-	asc1.etageCible=5;
+	asc1.etageCible=2;
 	asc1.etat=0;
-	asc1.utilisable=true;
+	asc1.utilisable=false;
 
 	goTo(asc1);
 
-	printf("%d\n", asc1.id);
-	printf("%d\n", asc1.capacite);
-	printf("%d\n", asc1.etageCourant);
-	printf("%d\n", asc1.etageDepart);
-	printf("%d\n", asc1.etageCible);
-	printf("%d\n", asc1.etat);
-	printf("%d\n", asc1.utilisable);
+	fprintf(debugFile, "%d",asc1.id);
+	fprintf(debugFile,"%d\n", asc1.capacite);
+	fprintf(debugFile,"%d\n", asc1.etageCourant);
+	fprintf(debugFile,"%d\n", asc1.etageDepart);
+	fprintf(debugFile,"%d\n", asc1.etageCible);
+	fprintf(debugFile,"%d\n", asc1.etat);
+	fprintf(debugFile,"%d\n", asc1.utilisable);
+	fclose(debugFile);
 	return 0;
 }
