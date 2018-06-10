@@ -4,13 +4,10 @@
 /* Date : 16/05/2018                                                  */
 /**********************************************************************/
 
-
-/**********************************************************************/
-/* Ce fichier contiendra la structure ascenceur permettant de         */
-/* modeliser un ascenceur, ainsi que les fonctions permettant de      */
-/* modeliser les actions de l'ascenceur.                              */
-/**********************************************************************/
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+//#include "ascenceur.h"
 
 typedef struct Ascenseur
 {
@@ -18,6 +15,7 @@ typedef struct Ascenseur
 	int etagedepart;
 	int etagecible;
 	int capacite;
+	int etat;
 	bool utilisable;
 } Ascenseur;
 
