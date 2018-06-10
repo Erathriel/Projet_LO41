@@ -29,13 +29,25 @@ typedef struct Borne
 void goTo(Ascenseur asc){
 	if (asc.utilisable)
 	{
-		if (etageDepart<etageCible && etageCible<NB_ETAGES)
+		if (asc.etageDepart<asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
-			/* code */
+			for (int i = asc.etageDepart; i < asc.etageCible+1; ++i)
+			{
+				asc.etat=1
+				asc.etageCourant++;
+				asc.etat=2;
+				if (asc.etat==2)
+				{
+					printf("Arret a l'etage : %d\n", asc.etageCourant);
+					wait(60);
+					printf("Reprise de chemin\n");
+				}
+				printf("Etage : %d\n",asc.etageCourant);
+			}
 		} 
-		else if (etageDepart<etageCible && etageCible<NB_ETAGES)
+		else if (etageDepart>etageCible && etageCible<NB_ETAGES)
 		{
-			/* code */
+			// A completer
 		} else{
 			printf("Erreur : etage cible ou depart non repertorie...\n");
 		}
@@ -55,7 +67,7 @@ int main(int argc, char const *argv[])
 	asc1.capacite=5;
 	asc1.etageCourant=0;
 	asc1.etageDepart=etageCourant;
-	asc1.etageCible=0;
+	asc1.etageCible=5;
 	asc1.etat=0;
 	asc1.utilisable=true;
 
