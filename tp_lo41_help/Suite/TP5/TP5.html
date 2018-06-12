@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE> Enonc&eacute; des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20090421;16592900">
+	<META NAME="CHANGEDBY" CONTENT="Philippe ">
+	<META NAME="CHANGED" CONTENT="20131112;9233400">
+	<STYLE TYPE="text/css">
+	<!--
+		TT.ctl { font-family: "Lohit Hindi", monospace }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="../../IMAGES/background.gif" DIR="LTR">
+<P STYLE="margin-bottom: 0cm">&nbsp; 
+</P>
+<TABLE WIDTH=100% CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100%>
+			<H1 ALIGN=CENTER STYLE="border: none; padding: 0cm"><FONT COLOR="#0047ff"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=5 STYLE="font-size: 20pt"><B>TP
+			5 - Les files de messages</B></FONT></FONT></FONT></H1>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><BR>&nbsp;<FONT SIZE=4><B>Pr&eacute;ambule</B></FONT>
+</FONT>
+</P>
+<BLOCKQUOTE STYLE="margin-left: 0cm; margin-right: 0cm"><FONT FACE="Arial Unicode MS, sans-serif">Lisez
+/usr/include/sys/ipc.h et /usr/include/sys/msg.h <BR>Commandes utiles
+: ipcs et ipcrm <BR>Fonctions utiles : ftok(), msgget(), msgsnd(),
+msgrcv(), msgctl()</FONT></BLOCKQUOTE>
+<OL>
+	<LI><P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Notes
+	de cours sur les IPC</B></FONT></FONT></P>
+</OL>
+<BLOCKQUOTE><BR><BR>
+</BLOCKQUOTE>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Unicode MS, sans-serif">Les objets
+IPC (<B>files de messages, s&eacute;maphores, segments de m&eacute;moire
+partag&eacute;e</B>) n'appartiennent pas au syst&egrave;me de gestion
+de fichiers, ils sont r&eacute;pertori&eacute;s dans trois tables
+poss&eacute;dant la m&ecirc;me organisation mais dont le contenu est
+sp&eacute;cifique &agrave; chacun des objets. L'acc&egrave;s &agrave;
+ces objets s'effectue au moyen de <B>cl&eacute;s</B> et de <B>num&eacute;ros
+internes </B>. La fonction suivante se sert du num&eacute;ro d'inode
+et du num&eacute;ro de disque de &quot;ref_Fichier&quot; ainsi que du
+caract&egrave;re fourni pour fabriquer une cl&eacute; unique : </FONT>
+</P>
+<P ALIGN=CENTER><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=3><B>key_t
+ftok(const char * ref_Fichier, char c)</B></FONT></FONT></TT></P>
+<OL START=2>
+	<LI><P> <FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Exo1</B></FONT></FONT></P>
+</OL>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Unicode MS, sans-serif">A partir
+du programme P0.c, concevez une communication Client Serveur par le
+biais d'une file de messages unique. Le serveur effectue l'addition
+de deux nombres entiers envoy&eacute;s par le client et renvoie le
+r&eacute;sultat. Dans cette application, le serveur doit uniquement
+consommer les requ&ecirc;tes depuis la file de messages. Les clients
+de leur cot&eacute; doivent uniquement lire la r&eacute;ponse qui les
+concerne.</FONT></P>
+<OL START=2>
+	<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>3.
+	Utilisation des files de messages </B></FONT></FONT><BR><BR><BR>
+	</P>
+</OL>
+<P ALIGN=CENTER><IMG SRC="image.gif" NAME="Image2" ALIGN=BOTTOM WIDTH=198 HEIGHT=135 BORDER=0></P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Arial Unicode MS, sans-serif">Les
+programmes P1.c, P2.c et P3.c correspondent au sch&eacute;ma
+pr&eacute;c&eacute;dent. Un processus P1 cr&eacute;e une file de
+message puis les 2 processus P2 et P3. P1 attend la fin de ses 2
+fils, &eacute;crit sur la sortie standard le nom de chaque processus
+qui se termine, d&eacute;truit la file de messages, puis se termine.
+P2 et P3, en recevant le num&eacute;ro de la file de message cr&eacute;&eacute;e
+par P1, pourront l'utiliser et s'&eacute;changer des informations. </FONT>
+</P>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Unicode MS, sans-serif">a)
+Compilez P1.c, P2.c, P3.c pour obtenir les ex&eacute;cutables P1, P2
+et P3. </FONT>
+</P>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Unicode MS, sans-serif">b)
+Ex&eacute;cutez P</FONT><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif">1</FONT></TT><FONT FACE="Arial Unicode MS, sans-serif">,
+puis r&eacute;essayez une nouvelle fois. Comment expliquez-vous la
+r&eacute;ponse ? </FONT>
+</P>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Unicode MS, sans-serif">c)
+Visualisez les tables du syst&egrave;me et d&eacute;truisez l'entr&eacute;e
+ad&eacute;quate (</FONT><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif">ipcs,
+ipcrm</FONT></TT><FONT FACE="Arial Unicode MS, sans-serif">), puis
+modifiez </FONT><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif">P1.c
+</FONT></TT><FONT FACE="Arial Unicode MS, sans-serif">pour que la
+destruction de la file de messages soit automatique. </FONT>
+</P>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Unicode MS, sans-serif">d)
+Compl&eacute;tez P2.c et P3.c pour que les deux processus P2 et P3
+s'&eacute;crivent et lisent mutuellement leurs num&eacute;ros de PID
+en utilisant la file de message cr&eacute;&eacute;e par P1. </FONT>
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>4.
+Mod&egrave;le client-serveur avec les files de messages</B></FONT> </FONT>
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif">Le programme </FONT><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif">prg2.c
+</FONT></TT><FONT FACE="Arial Unicode MS, sans-serif">impl&eacute;mente
+un mod&egrave;le client-serveur dans lequel chaque CLIENT </FONT><FONT FACE="Arial Unicode MS, sans-serif"><I>i</I></FONT>
+<FONT FACE="Arial Unicode MS, sans-serif">demande au SERVEUR la
+g&eacute;n&eacute;ration de </FONT><FONT FACE="Arial Unicode MS, sans-serif"><I>n</I></FONT>
+<FONT FACE="Arial Unicode MS, sans-serif">nombres al&eacute;atoires
+compris dans l'intervalle </FONT><FONT FACE="Arial Unicode MS, sans-serif"><I>1..MAXi
+</I></FONT><FONT FACE="Arial Unicode MS, sans-serif">, le nombre </FONT><FONT FACE="Arial Unicode MS, sans-serif"><I>MAXi</I></FONT>
+<FONT FACE="Arial Unicode MS, sans-serif">&eacute;tant tir&eacute; au
+sort par chaque client. La communication et la synchronisation sont
+assur&eacute;es en utilisant une seule file de messages. </FONT>
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif">a) </FONT><FONT FACE="Arial Unicode MS, sans-serif"><B>Application
+: boucle &agrave; 3.</B></FONT> 
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif">&Eacute;crivez &agrave;
+partir de </FONT><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif">prg2.c
+</FONT></TT><FONT FACE="Arial Unicode MS, sans-serif">un programme
+</FONT><TT CLASS="western"><FONT FACE="Arial Unicode MS, sans-serif">prg3.c
+</FONT></TT><FONT FACE="Arial Unicode MS, sans-serif">comprenant un
+autre processus serveur (TRIEUR) qui trie les nombres al&eacute;atoires
+g&eacute;n&eacute;r&eacute;s par le SERVEUR avant de les fournir au
+CLIENT. <BR></FONT><BR><BR>
+</P>
+</BODY>
+</HTML>

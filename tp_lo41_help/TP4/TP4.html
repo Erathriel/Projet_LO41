@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Enoncé des TP</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1404.34">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p3 {margin: 0.0px 0.0px 12.0px 0.0px; text-align: center; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    p.p4 {margin: 0.0px 0.0px 12.0px 0.0px; line-height: 19.0px; font: 14.0px 'Arial Unicode MS'; color: #000000; -webkit-text-stroke: #000000}
+    p.p5 {margin: 0.0px 0.0px 12.0px 0.0px; line-height: 16.0px; font: 12.0px 'Arial Unicode MS'; color: #000000; -webkit-text-stroke: #000000}
+    p.p6 {margin: 0.0px 0.0px 12.0px 0.0px; line-height: 16.0px; font: 14.0px 'Arial Unicode MS'; color: #000000; -webkit-text-stroke: #000000}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 13.0px; font: 11.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 12.0px Times; font-kerning: none}
+    span.s3 {font: 12.0px Courier; font-kerning: none}
+    span.s4 {font: 12.0px 'Arial Unicode MS'; text-decoration: underline ; font-kerning: none; color: #0000ee; -webkit-text-stroke: 0px #0000ee}
+    span.s5 {font: 10.0px 'Arial Unicode MS'; font-kerning: none}
+    span.s6 {font: 12.0px 'Arial Unicode MS'; font-kerning: none}
+    table.t1 {width: 784.0px}
+    td.td1 {width: 780.0px; margin: 1.0px 1.0px 1.0px 1.0px}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1"> <span class="Apple-converted-space"> </span></span></p>
+<table width="784.0" cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="middle" class="td1">
+        <h1 style="margin: 0.0px 0.0px 16.1px 0.0px; text-align: center; line-height: 36.0px; font: 27.0px 'Arial Unicode MS'; color: #0000ff; -webkit-text-stroke: #0000ff"><span class="s1">TP4- Les signaux</span></h1>
+      </td>
+    </tr>
+    <tr>
+      <td valign="middle" class="td1">
+        <p class="p3"><span class="s1"><br>
+</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p4"><span class="s1">Préambule</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">kill -l</span><span class="s3"> </span><span class="s1">(pour avoir la liste des signaux disponibles)</span><span class="s2"> </span><span class="s1"><br>
+<a href="file:///Users/pdescamp/DocTP/signal.h"><span class="s4">/usr/include/sys/signal.h </span></a>(pour la programmation des signaux)<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">1 - Gestion du traitant</span></p>
+<p class="p5"><span class="s1">a) Regardez prg1.c</span><span class="s3"> </span><span class="s1">et testez-le avec le caractère de contrôle</span><span class="s2"> </span><span class="s1">(Ctrl-C ).Modifiez le code de sorte que l'exécution se termine dès le 1</span><span class="s5"><sup>er</sup></span><span class="s2"> </span><span class="s1">Ctrl-C.</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">b) Ajoutez-y un traitant pour le signal SIGTSTP (Ctrl-Z) qui affiche «suspension du processus» ---- et suspend effectivement le processus comme le fait le traitant par défaut sur la frappe de Ctrl-Z . Pour y parvenir utiliser SIGACTION.</span></p>
+<p class="p5"><span class="s1">c) Optez<span class="Apple-converted-space">  </span>pour l’utilisation du traitant de Sigaction afin de faciliter la lecture de la structure siginfo_t. Assurez vous d’identifier le numéro de signal, le pid du processus qui a transmis le signal et du groupe auquel appartient ce processus.</span></p>
+<p class="p6"><span class="s1">2 - Masquage</span><span class="s6"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">Exécutez prg3 en l'interrompant par un Ctrl-C, puis enlevez le commentaire devant un des appels à sigprocmask</span><span class="s2"> </span><span class="s1">et ré-exécutez le pour chacun des deux cas. <br>
+Expliquez la différence de comportement sur l'apparition du message "fin du processus fils".<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s1">3 Attente</span><span class="s6"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">a) Exécutez plusieurs fois prg4 et expliquez la différence de nombre de signaux envoyés et reçus.<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">b) Afin d'éviter la perte de signaux on instaure un protocole de communication. Le père envoie un accusé de réception lorsqu'il a reçu le signal et le fils se bloque en attente (pause). Expliquez les raisons de l'interblocage sur prg4bis</span><span class="s3"> </span><span class="s1">.<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">Pour aller plus loin :<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">c) Évitez le problème précédent en vous bloquant avec sigsuspend. Regardez prg5.c</span><span class="s3"> </span><span class="s1">et exécutez-le (Courant ou Ancien?)</span></p>
+<p class="p4"><span class="s1">4 Applications</span><span class="s6"><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">a) Endormissement d'un processus : en utilisant SIGALRM, écrivez la fonction sleep</span><span class="s2"> </span><span class="s1">de la bibliothèque C.<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s1">b) Terminaison processus fils : il peut arriver que le processus père ait des traitements à effectuer avant de se bloquer sur un wait. Ecrivez un traitant pour le signal SIGCHLD émis automatiquement par le système à la terminaison d'un processus fils pour pouvoir lire le code de retour d'un processus fils sans avoir à se bloquer dans le père.<span class="Apple-converted-space"> </span></span></p>
+<p class="p7"><span class="s1">Utbm – LO41 – mars 2016</span></p>
+</body>
+</html>

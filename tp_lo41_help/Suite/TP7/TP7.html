@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE> Enonc&eacute; des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20140521;14433700">
+	<META NAME="CHANGEDBY" CONTENT="Philippe ">
+	<META NAME="CHANGED" CONTENT="20140521;14501000">
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="/U:/Sauvegarde%20Cours/Sauvegarde%20Printemps%202009/DATA/IMAGES/background.gif" DIR="LTR">
+<P STYLE="margin-bottom: 0cm">&nbsp; 
+</P>
+<TABLE WIDTH=100% CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100%>
+			<H1 ALIGN=CENTER STYLE="border: none; padding: 0cm"><FONT COLOR="#0047ff"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=5 STYLE="font-size: 20pt">TP
+			7 - La m&eacute;moire partag&eacute;e</FONT></FONT></FONT></H1>
+			<P ALIGN=RIGHT STYLE="border: none; padding: 0cm"><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=100%>
+			<P ALIGN=CENTER><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>1. A la
+d&eacute;couverte des segments de m&eacute;moire partag&eacute;e </B></FONT></FONT>
+</P>
+<P><FONT FACE="Tahoma, sans-serif">Ex&eacute;cutez plusieurs fois le
+programme prg1.c. </FONT>
+</P>
+<P><FONT FACE="Tahoma, sans-serif">Un processus et son fils partagent
+une variable enti&egrave;re en m&eacute;moire partag&eacute;e. La
+variable, initialis&eacute;e &agrave; 0, est incr&eacute;ment&eacute;e
+1 000 000 fois par chacun des deux processus. La valeur finale de
+cette variable est affich&eacute;e par le processus p&egrave;re.
+Celui-ci s'est assur&eacute; que son fils &eacute;tait termin&eacute;
+(wait). Pourtant la valeur affich&eacute;e est souvent diff&eacute;rente
+de 2000000. </FONT>
+</P>
+<P><FONT FACE="Tahoma, sans-serif">On peut conclure naturellement que
+nous sommes confront&eacute;s &agrave; un probl&egrave;me de
+synchronisation. Utilisez les s&eacute;maphores pour prot&eacute;ger
+les diff&eacute;rentes incr&eacute;mentations et obtenir le bon
+r&eacute;sultat. </FONT>
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>2.
+Application simple : &Eacute;criture et Lecture dans un segment de
+m&eacute;moire partag&eacute;e  </B></FONT></FONT>
+</P>
+<P><FONT FACE="Tahoma, sans-serif">&Eacute;crivez un programme selon
+les conditions suivantes : si le programme est utilis&eacute; sans
+aucun argument, il lit le contenu du segment de m&eacute;moire
+partag&eacute;e. Dans le cas contraire, si le programme est utilis&eacute;
+avec un argument de type &laquo;cha&icirc;ne de caract&egrave;res&raquo;,
+alors celui-ci stocke cet argument dans le segment de m&eacute;moire.
+</FONT>
+</P>
+<P STYLE="margin-left: 0.03cm"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>3.
+Application</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif">Impl&eacute;mentez une solution
+permettant &agrave; deux processus de communiquer via une m&eacute;moire
+partag&eacute;e. Le premier processus envoie une s&eacute;rie de
+nombres &agrave; un autre processus qui lui calcule la moyenne de la
+s&eacute;rie. </FONT>
+</P>
+<P><FONT FACE="Tahoma, sans-serif">Ex :</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1 a
+produit le nombre 800 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1 a
+produit le nombre 720 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1 a
+produit le nombre 237 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1 a
+produit le nombre 990 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1 a
+produit le nombre 83 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1
+attend </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P2 lit
+les nombres, calcule la moyenne et la retourne a P1</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P2
+calcule la moyenne egale a 566 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">Fin du
+processus P2</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">P1
+vient de lire la moyenne 566 </FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">Fin du
+processus 1</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Tahoma, sans-serif">Fils
+3871 termine</FONT></P>
+<P><FONT FACE="Tahoma, sans-serif">Fils 3870 termine</FONT></P>
+<P ALIGN=JUSTIFY><BR><BR>
+</P>
+<OL START=4>
+	<LI><P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Les
+	Philosophes</B></FONT></FONT></P>
+</OL>
+<P><FONT FACE="Tahoma, sans-serif">Cinq philosophes sont assis en
+cercle. Une assiette de riz est d&eacute;pos&eacute;e devant chaque
+philosophe ainsi qu'une baguette qui est intercal&eacute;e entre
+chaque assiette. Bien qu'affam&eacute;s, les philosophes sont
+suffisamment sages pour ne pas se saisir d'une seule baguette si
+l'autre n'est pas accessible (ce qui cr&eacute;erait une v&eacute;ritable
+situation de famine).</FONT></P>
+<P><FONT FACE="Tahoma, sans-serif">Vous impl&eacute;menterez une
+solution &agrave; ce probl&egrave;me en indiquant les d&eacute;buts
+et fins de repas de chaque philosophe, la dur&eacute;e du repas
+pourra &ecirc;tre simul&eacute;e par un endormissement pendant un
+laps de temps g&eacute;n&eacute;r&eacute; al&eacute;atoirement. </FONT>
+</P>
+<P><BR><BR>
+</P>
+<OL START=4>
+	<P ALIGN=JUSTIFY STYLE="font-style: normal"></P>
+</OL>
+</BODY>
+</HTML>

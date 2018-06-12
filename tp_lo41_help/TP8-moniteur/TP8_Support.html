@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE> Enonc&eacute; des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Win32)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGEDBY" CONTENT="Philippe ">
+	<META NAME="CHANGED" CONTENT="20131203;9125400">
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="/U:/Images/background.gif" DIR="LTR">
+<P STYLE="margin-bottom: 0cm">&nbsp; 
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100%>
+			<H1 ALIGN=CENTER><FONT COLOR="#0047ff"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=5 STYLE="font-size: 20pt">TP
+			8 &ndash; Support Moniteur C/POSIX</FONT></FONT></FONT></H1>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Introduction</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un <B>Mutex </B>est
+<B>un s&eacute;maphore binaire </B>pouvant prendre un des deux &eacute;tats
+: <B>&quot;lock&quot; </B>(verrouill&eacute;) ou <B>&quot;unlock&quot;
+</B>(d&eacute;verrouill&eacute;): valeur de s&eacute;maphore 1 ou 0</FONT></FONT></P>
+<P>&bull;<FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un </FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>&laquo;
+Mutex &raquo; </B></FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>ne
+peut &ecirc;tre partag&eacute; que par des threads d&rsquo;un m&ecirc;me
+processus</FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un </FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>&laquo;
+Mutex &raquo; </B></FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>ne
+peut &ecirc;tre verrouill&eacute; que par une seule thread &agrave;
+la fois.</FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Une thread qui
+tente de verrouiller un &laquo; Mutex &raquo; d&eacute;j&agrave;
+verrouill&eacute; est suspendu jusqu'&agrave; ce que le &laquo; Mutex
+&raquo; soit d&eacute;verrouill&eacute;.</FONT></FONT></P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>D&eacute;claration
+et initialisation d'un Mutex</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un mutex est une
+variable de type &laquo; thread_mutex_t &raquo;</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Il existe une
+constante PTHREAD_MUTEX_INITIALIZER de ce type permettant une
+d&eacute;claration avec initialisation statique du mutex (avec les
+valeurs de comportement par d&eacute;faut)</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_mutex_t
+monMutex = THREAD_MUTEX_INITIALIZER;</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un mutex peut
+&eacute;galement &ecirc;tre initialis&eacute; par un appel de la
+primitive</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>int
+pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t
+*mutexattr);</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>avec une
+initialisation par d&eacute;faut lorsque mutexattr vaut NULL</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>ex :
+pthread_mutex_init(&amp;monMutex, NULL);</FONT></FONT></P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Prise
+d'un mutex</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un mutex peut &ecirc;tre
+<B>verrouill&eacute; </B>par la primitive</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>int
+pthread_mutex_lock(pthread_mutex_t *mutex);</B></FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Si le mutex
+est </FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>d&eacute;verrouill&eacute;
+</B></FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>il
+devient </FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>verrouill&eacute;</B></FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Si le mutex
+est d&eacute;j&agrave; verrouill&eacute; par une autre thread la
+tentative de verrouillage </FONT></FONT><FONT COLOR="#ff0000"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>suspend
+</B></FONT></FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>l'appelant
+jusqu'&agrave; ce que le mutex soit d&eacute;verrouill&eacute;.</FONT></FONT></P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Relachement
+d'un mutex</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un mutex peut &ecirc;tre
+d&eacute;verrouill&eacute; par la primitive</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>int
+pthread_mutex_unlock(pthread_mutex_t *mutex);</B></FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Si le mutex
+est d&eacute;j&agrave; d&eacute;verrouill&eacute;, cet appel n'a
+aucun effet (comportement par d&eacute;faut)</FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Si le mutex
+est verrouill&eacute;, une des threads en attente obtient le mutex
+(qui reprend alors l'&eacute;tat verrouill&eacute;) et cette thread
+redevient active (elle n'est plus bloqu&eacute;e)</FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>L'op&eacute;ration
+est toujours </FONT></FONT><FONT COLOR="#00009a"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>non
+bloquante pour l'appelant</FONT></FONT></FONT></P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Moniteurs
+Posix</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Un moniteur Posix est
+l'association <B>:</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>- d'un mutex (
+</B>type <B>pthread_mutex_t ) </B>qui sert &agrave; prot&eacute;ger
+la partie de code o&ugrave; l'on teste les conditions de progression</FONT></FONT></P>
+<P>&ndash; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>et </FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>d&rsquo;une
+variable condition ( </B></FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>type
+</FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_cond_t
+) </B></FONT></FONT><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>qui
+sert de point de signalisation :</FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>on se met en
+attente sur cette variable par la primitive : Lib&eacute;ration du
+mutex + Blocage syst&eacute;matique de l&rsquo;appelant de mani&egrave;re
+atomique</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_cond_wait(&amp;laVariableCondition,&amp;leMutex);</B></FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>on est
+r&eacute;veill&eacute; sur cette variable avec la primitive : R&eacute;veil
+d&rsquo;une thread en attente qui acquiert &agrave; nouveau le mutex</FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_cond_signal(&amp;laVariableCondition);</B></FONT></FONT></P>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>Sch&eacute;ma
+d'utilisation :</B></FONT></FONT></P>
+<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2>Soit la condition de
+progression C,</FONT></FONT></P>
+<P>&bull; <FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>Le sch&eacute;ma
+d&rsquo;utilisation des moniteurs Posix est le suivant :</B></FONT></FONT></P>
+<TABLE WIDTH=615 BORDER=1 CELLPADDING=4 CELLSPACING=3>
+	<COL WIDTH=599>
+	<TR>
+		<TD WIDTH=599 HEIGHT=198 VALIGN=TOP>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_mutex_lock
+			(&amp;leMutex);</B></FONT></FONT></P>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>&eacute;valuer
+			C;</B></FONT></FONT></P>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>while
+			( ! C ) {</B></FONT></FONT></P>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_cond_wait(&amp;laVariableCondition,&amp;leMutex);</B></FONT></FONT></P>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>r&eacute;-&eacute;valuer
+			C si n&eacute;cessaire</B></FONT></FONT></P>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>}</B></FONT></FONT></P>
+			<P STYLE="margin-bottom: 0.2cm"><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>Faire
+			le travail;</B></FONT></FONT></P>
+			<P><FONT FACE="Tahoma, sans-serif"><FONT SIZE=2><B>pthread_mutex_unlock(&amp;leMutex);</B></FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=2><I>Extrait
+du Support de cours de Samia Bouzefrane</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=2><I>Cedric
+Cnam</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=2><I>http://cedric.cnam.fr/~bouzefra</I></FONT></FONT></P>
+<P><BR><BR>
+</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

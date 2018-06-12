@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE> Enoncé des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 4.0.2.2 (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGED" CONTENT="20131118;17330600">
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="/U:/Sauvegarde%20Cours/Sauvegarde%20Printemps%202009/DATA/IMAGES/background.gif" DIR="LTR">
+<P STYLE="margin-bottom: 0cm">&nbsp; 
+</P>
+<TABLE WIDTH=100% CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100% STYLE="border: none; padding: 0cm">
+			<H1 ALIGN=CENTER><FONT COLOR="#0066cc"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=5 STYLE="font-size: 20pt">TP
+			6 - Les sémaphores</FONT></FONT></FONT></H1>
+			<P ALIGN=RIGHT><FONT COLOR="#0066cc"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=2 STYLE="font-size: 9pt">Automne
+			2013</FONT></FONT></FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=100% STYLE="border: none; padding: 0cm">
+			<P ALIGN=CENTER><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>1. A la
+découverte des sémaphores</B> </FONT></FONT>
+</P>
+<P><FONT FACE="Tahoma"><FONT SIZE=2>Compilez le programme Prg1.c,
+exécutez le et analyser son comportement.</FONT></FONT></P>
+<P><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>2. Les
+sémaphores IPC </B></FONT></FONT>
+</P>
+<P> <FONT FACE="Tahoma"><FONT SIZE=2>A l'aide du programme précédent,
+modifiez le programme Prg2.c  Déduisez la procédure<B> InitSem</B>,
+qui initialise les sémaphores et la procédure <B>LibèreSem </B>qui
+libère l'objet IPC.</FONT></FONT></P>
+<P STYLE="margin-left: 0.03cm"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>3.
+La piscine</B></FONT></FONT></P>
+<P ALIGN=JUSTIFY><FONT FACE="Tahoma"><FONT SIZE=2>On veut simuler le
+fonctionnement d’une piscine en considérant chaque baigneur qui se
+présente comme un processus accomplissant un certain nombre de
+tâches, à l’aide de ressources (paniers, cabines) qu’il doit
+partager avec les autres baigneurs. Si ces ressources ne sont pas
+disponibles, il est bloqué, il doit attendre. On dispose de NP
+paniers et NC cabines. Écrire le processus baigneur en ajoutant les
+synchronisations à l’aide de sémaphores et des opérations P et
+V. Pour répondre à cet exercice, vous pouvez vous inspirer du
+fichier piscine.c.</FONT></FONT></P>
+<P ALIGN=JUSTIFY><FONT FACE="Tahoma"><FONT SIZE=2><I>Ce programme
+doit être réalisé avec des processus</I></FONT></FONT></P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.03cm"><FONT FACE="Arial Unicode MS, sans-serif"><FONT SIZE=4><B>4</B><B>.
+</B><B>L</B><B>e carrefour</B></FONT></FONT></P>
+<P ALIGN=JUSTIFY><FONT FACE="Tahoma"><FONT SIZE=2>O</FONT></FONT><FONT FACE="Tahoma"><FONT SIZE=2>n
+</FONT></FONT><FONT FACE="Tahoma"><FONT SIZE=2>souhaite simuler le
+comportement de plusieurs voitures à un carrefour routier. Une
+voiture ne doit s'engager dans le carrefour que si aucune autre
+voiture ne s'y trouve déjà. La traversée du carrefour se fait en
+</FONT></FONT><FONT FACE="Tahoma"><FONT SIZE=2><I>Exclusion Mutuelle.
+</I></FONT></FONT><FONT FACE="Tahoma"><FONT SIZE=2><SPAN STYLE="font-style: normal">Le
+déplacement de chaque voiture se fait selon le schéma suivant&nbsp;:
+</SPAN></FONT></FONT>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm; background: #c0c0c0; font-style: normal">
+<B><FONT FACE="Tahoma"><FONT SIZE=2>Processus Voiture </FONT></FONT></B>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm; background: #c0c0c0"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm; background: #c0c0c0"><FONT FACE="Tahoma"><FONT SIZE=2><I>Arrivée
+au carrefour</I></FONT></FONT></P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm; background: #c0c0c0"><FONT FACE="Tahoma"><FONT SIZE=2><I>Traversée
+du carrefour en Exclusion Mutuelle</I></FONT></FONT></P>
+<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm; background: #c0c0c0"><FONT FACE="Tahoma"><FONT SIZE=2><I>Départ
+du carrefour</I></FONT></FONT></P>
+<P ALIGN=JUSTIFY><BR><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="font-style: normal"><FONT FACE="Tahoma"><FONT SIZE=2>La
+fonction void voiture(int num,int duree) définit le processus
+simulant le déplacement d'une voiture, num correspond au numéro de
+la voiture et duree au temps d'attente entre chaque phase du
+dépacement ( arrivée, traversée, départ). Dans un fichier
+carrefour.c définissez l'état d'une voiture à chaque fois qu'elle
+change d'état. Tester en vérifiant qu'il n'est pas possible d'avoir
+2 voitures en même temps dans le carrefour.</FONT></FONT></P>
+</BODY>
+</HTML>

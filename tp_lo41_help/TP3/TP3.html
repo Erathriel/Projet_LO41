@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE> Enoncé des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 4.0.2.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20090918;15101700">
+	<META NAME="CHANGED" CONTENT="20151014;9585700">
+	<META NAME="CHANGEDBY" CONTENT="Philippe ">
+	<STYLE TYPE="text/css">
+	<!--
+		PRE.ctl { font-family: "Lohit Hindi", monospace }
+		TT.ctl { font-family: "Lohit Hindi", monospace }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="../../../../IMAGES/background.gif" DIR="LTR">
+<P STYLE="margin-bottom: 0cm">&nbsp; 
+</P>
+<TABLE WIDTH=100% CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100% HEIGHT=53 STYLE="border: none; padding: 0cm">
+			<H1 ALIGN=CENTER><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif">TP
+			3 – Les Threads</FONT></FONT></H1>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=100% HEIGHT=16 STYLE="border: none; padding: 0cm">
+			<P ALIGN=CENTER><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=100% HEIGHT=2 STYLE="border: none; padding: 0cm">
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=5><B>Préambule</B></FONT></FONT></FONT><FONT COLOR="#0000ff">
+</FONT>
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>Compilation&nbsp;:
+	Utilisez <B>gcc -o NomProg NomProg.c -pthread</B></FONT></FONT></P>
+</UL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<OL>
+	<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>1.
+	Apprentissage</B></FONT></FONT></FONT></P>
+</OL>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>a) Modifier le
+comportement du programme </FONT></FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><SPAN STYLE="font-weight: normal">2th.c
+</SPAN></FONT></FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>en
+ajoutant </FONT></FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><B>un
+pthread_join</B></FONT></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>Que
+déduisez-vous de ce changement ? </FONT></FONT>
+</P>
+<P ALIGN=JUSTIFY><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>b)
+Dans l'exemple précédent, les threads sont créés en mode
+</FONT></FONT><EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>JOINABLE</FONT></FONT></EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>,
+c'est à dire que le processus qui a créé la</FONT></FONT> <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>thread
+attend la fin de celle-ci en restant bloqué sur l'appel à
+</FONT></FONT><EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>pthread_join</FONT></FONT></EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>.
+Lorsque la</FONT></FONT> <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>thread
+se termine, les ressources mémoire de la</FONT></FONT> <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>thread
+sont libérées grâce à l'appel à </FONT></FONT><EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>pthread_join</FONT></FONT></EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>.
+Si cet appel n'est pas effectué, la mémoire n'est pas libérée et
+il s'en suit une </FONT></FONT><EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>fuite
+de mémoire</FONT></FONT></EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>.
+Pour éviter un appel systématique à </FONT></FONT><EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>pthread_join</FONT></FONT></EM>
+<FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>(qui peut parfois
+être contraignant dans certaines applications), on peut créer la</FONT></FONT>
+<FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>thread en mode
+</FONT></FONT><EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>DETACHED</FONT></FONT></EM><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>.
+Dans ce cas , la mémoire sera correctement libérée à la fin de la
+thread. </FONT></FONT>
+</P>
+<PRE CLASS="western" STYLE="margin-left: 1.25cm; margin-bottom: 0.5cm"><TT CLASS="western"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><I>Pour se faire, il faut  ajouter:</I></FONT></FONT></TT></PRE><P STYLE="margin-left: 1.25cm">
+<TT CLASS="western"><SPAN STYLE="font-variant: normal"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><SPAN STYLE="font-style: normal"><B>Pour
+cela il suffit d'ajouter le code suivant: </B></SPAN></FONT></FONT></SPAN></TT>
+</P>
+<PRE CLASS="western" STYLE="margin-left: 1.25cm">  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>pthread_attr_t thread_attr;</FONT></FONT>
+
+  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>if (pthread_attr_init (&amp;thread_attr) != 0) {</FONT></FONT>
+    <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>fprintf (stderr, &quot;pthread_attr_init error&quot;);</FONT></FONT>
+    <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>exit (1);</FONT></FONT>
+  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>}</FONT></FONT>
+
+  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>if (pthread_attr_setdetachstate (&amp;thread_attr, PTHREAD_CREATE_DETACHED) != 0) {</FONT></FONT>
+    <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>fprintf (stderr, &quot;pthread_attr_setdetachstate error&quot;);</FONT></FONT>
+
+    <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>exit (1);</FONT></FONT>
+  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>}</FONT></FONT></PRE><P STYLE="margin-left: 1.25cm">
+<TT CLASS="western"><SPAN STYLE="font-variant: normal"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><SPAN STYLE="font-style: normal"><B>puis
+de créer les threads avec des appels du type: </B></SPAN></FONT></FONT></SPAN></TT>
+</P>
+<PRE CLASS="western" STYLE="margin-left: 1.25cm">  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>if (pthread_create (&amp;th1, &amp;thread_attr, thread1_process, NULL) &lt; 0) {</FONT></FONT>
+          <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>fprintf (stderr, &quot;pthread_create error for thread 1\n&quot;);</FONT></FONT>
+        <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>exit (1);</FONT></FONT>
+  <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>}</FONT></FONT></PRE><P>
+<FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>c) Expliquer le
+comportement du programme </FONT></FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><B>Echec_thread.c
+</B></FONT></FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><SPAN STYLE="font-weight: normal">Modifiez
+celui-ci de sorte qu'il autorise la création de threads à l'infini.</SPAN></FONT></FONT></P>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>2.
+Passage d'Arguments</B></FONT></FONT></FONT></P>
+<P><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><B>Examinez
+le programme 4th.c </B></FONT></FONT></FONT>
+</P>
+<P><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><B>a)
+</B><SPAN STYLE="font-weight: normal">Ecrire AfficheMessage tel que&nbsp;</SPAN><B>:
+void *AfficheMessage(void *threadid)</B></FONT></FONT></FONT></P>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>3.
+Echanger données</B></FONT></FONT></FONT></P>
+<P><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2><B>Examinez
+et Tester le programme Trois Thread.c </B></FONT></FONT></FONT>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>Écrivez un
+programme dans lequel 2 threads sont crées : </FONT></FONT>
+</P>
+<UL>
+	<LI><P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>la
+	1ere calcule a*b et la 2eme c*d</FONT></FONT></P>
+	<LI><P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>la
+	thread initiale attend les 2 résultats et fait leur somme</FONT></FONT></P>
+	<LI><P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>a,
+	b, c et d sont passes en arguments au programme</FONT></FONT></P>
+</UL>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>4.
+Thread et Signaux</B></FONT></FONT></FONT></P>
+<P STYLE="font-weight: normal"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>Expliquez
+le comportement du programme Thread-signal.c</FONT></FONT></FONT></P>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>5.
+Gestion du stock</B></FONT></FONT></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=2>A partir du
+programme client.c , écrivez les fonctions «&nbsp;clients «&nbsp;
+et Terminaison_Thread.</FONT></FONT></P>
+<P><BR><BR>
+</P>
+<DIV TYPE=FOOTER>
+	<P ALIGN=JUSTIFY STYLE="margin-top: 0.5cm"><SDFIELD TYPE=PAGE SUBTYPE=RANDOM FORMAT=PAGE>1</SDFIELD>
+	<FONT FACE="Ubuntu"><FONT SIZE=1 STYLE="font-size: 8pt"><B>UTBM -
+	LO41</B></FONT></FONT></P>
+</DIV>
+</BODY>
+</HTML>

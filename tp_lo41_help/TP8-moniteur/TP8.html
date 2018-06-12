@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE> Enonc&eacute; des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20090526;16251100">
+	<META NAME="CHANGEDBY" CONTENT="Philippe ">
+	<META NAME="CHANGED" CONTENT="20131203;9122700">
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="/IMAGES/background.gif" DIR="LTR">
+<P STYLE="margin-bottom: 0cm">&nbsp; 
+</P>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=2 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100%>
+			<H1 ALIGN=CENTER><FONT COLOR="#0084d1"><FONT FACE="Arial Narrow, sans-serif">TP
+			8 - Les moniteurs</FONT></FONT></H1>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><FONT SIZE=4><B>Pr</B></FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=4><B>&eacute;ambule</B></FONT></FONT>
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">Consultez
+	/usr/include/pthread.h </FONT>
+	</P>
+</UL>
+<OL TYPE=a>
+	<P><TT><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>Variables
+	de condition: </B></FONT></FONT></FONT></TT><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>permet
+	&agrave; une thread de se mettre en attente d&rsquo;une condition
+	logique (pr&eacute;dicat) du programme, tout en lib&eacute;rant
+	l&rsquo;exclusion mutuelle impos&eacute;e par le mutex;</FONT></FONT></FONT></P>
+	<P><TT><B>i</B></TT><TT><FONT FACE="Arial Narrow, sans-serif"><B>nt
+	pthread_cond_wait (pthread_cond_t *cond, pthread_mutex_t *mutex);</B></FONT></TT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">L&rsquo;activit&eacute;
+	appelante doit poss&eacute;der le verrou </FONT><TT><FONT FACE="Arial Narrow, sans-serif">mutex</FONT></TT><FONT FACE="Arial Narrow, sans-serif">.
+	L&rsquo;activit&eacute; est alors bloqu&eacute;e sur la variable
+	condition apr&egrave;s avoir lib&eacute;r&eacute; le verrou.
+	L&rsquo;activit&eacute; reste bloqu&eacute;e jusqu&rsquo;&agrave; ce
+	que la variable condition soit signal&eacute;e et que l&rsquo;activit&eacute;
+	ait r&eacute;ussi &agrave; r&eacute;acqu&eacute;rir le verrou.</FONT></P>
+	<P><TT><FONT FACE="Arial Narrow, sans-serif"><B>int
+	pthread_cond_signal (pthread_cond_t *cond);</B></FONT></TT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">Signale la variable
+	condition : une activit&eacute; bloqu&eacute;e sur la variable
+	condition est r&eacute;veill&eacute;e. Cette activit&eacute; tente
+	alors de r&eacute;acqu&eacute;rir le verrou correspondant &agrave;
+	son appel de </FONT><TT><FONT FACE="Arial Narrow, sans-serif">cond_wait</FONT></TT><FONT FACE="Arial Narrow, sans-serif">.
+	Elle sera effectivement d&eacute;bloqu&eacute;e quand elle r&eacute;ussira
+	&agrave; r&eacute;acqu&eacute;rir ce verrou. Il n&rsquo;y a aucun
+	ordre garanti pour le choix de l&rsquo;activit&eacute; r&eacute;veill&eacute;e.
+	L&rsquo;op&eacute;ration signal n&rsquo;a aucun effet s&rsquo;il n&rsquo;y
+	a aucune activit&eacute; bloqu&eacute;e sur la variable condition
+	(pas de m&eacute;morisation).</FONT></P>
+	<P><TT><FONT FACE="Arial Narrow, sans-serif"><B>int
+	pthread_cond_broadcast (pthread_cond_t *cond);</B></FONT></TT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">Toutes les activit&eacute;s
+	en attente sont r&eacute;veill&eacute;es, et tentent d&rsquo;obtenir
+	le verrou correspondant &agrave; leur appel de </FONT><TT><FONT FACE="Arial Narrow, sans-serif">cond_wait</FONT></TT><FONT FACE="Arial Narrow, sans-serif">.</FONT></P>
+</OL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<OL TYPE=a START=0>
+	<P><FONT FACE="Arial Narrow, sans-serif">On peut ais&eacute;ment
+	imaginer qu'une erreur de programmation des primitives P() et V() ou
+	l'oubli d'une de ces primitives peut &ecirc;tre tr&egrave;s grave :
+	interblocage, incoh&eacute;rence des donn&eacute;es, etc... On ne
+	peut donc pas concevoir tout un syst&egrave;me d'exploitation
+	uniquement a partir des s&eacute;maphores. Un outil de programmation
+	plus sur s'av&egrave;re n&eacute;cessaire.</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">D&eacute;finition : Un
+	moniteur est une structure de variables et de proc&eacute;dures
+	pouvant &ecirc;tre param&eacute;tr&eacute;e et partag&eacute;e par
+	plusieurs processus. Ce concept a &eacute;t&eacute; propose par
+	C.A.R. HOARE en 1974 et P.BRINCH-HANSEN en 1975. Le type moniteur
+	existe dans certains langages de programmation, tels que Concurrent
+	Pascal.</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">Le corps du moniteur est
+	ex&eacute;cut&eacute; d&egrave;s que le programme est lance pour
+	initialiser les variables du moniteur. Les variables moniteur ne
+	sont accessibles qu'a travers les proc&eacute;dures moniteur. La
+	seule mani&egrave;re pour un processus d'acc&eacute;der a une
+	variable moniteur est d'appeler une proc&eacute;dure moniteur.</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">On peut pr&eacute;voir
+	plusieurs moniteurs pour diff&eacute;rentes taches qui vont
+	s'ex&eacute;cuter en parall&egrave;le. Chaque moniteur est charge
+	d'une tache bien pr&eacute;cise et chacun a ses donn&eacute;es et
+	ses instructions r&eacute;serv&eacute;es. Si un moniteur M1 est le
+	seul moniteur a avoir acc&egrave;s a la variable u1, on est sur que
+	u1 est en exclusion mutuelle. De plus, comme les seules op&eacute;rations
+	faites sur u1 sont celles programm&eacute;es dans M1, il ne peut y
+	avoir ni affectation, ni test accidentels.</FONT></P>
+	<P>O<FONT FACE="Arial Narrow, sans-serif">n dit que l'entr&eacute;e
+	du moniteur par un processus exclut l'entr&eacute;e du moniteur par
+	un autre processus.Les moniteurs pr&eacute;sentent plusieurs
+	avantages :</FONT></P>
+	<OL TYPE=a>
+		<LI><P><FONT FACE="Arial Narrow, sans-serif">au lieu d'etre
+		dispers&eacute;es dans plusieurs processus, les sections critiques
+		sont transform&eacute;es en</FONT></P>
+		<P><FONT FACE="Arial Narrow, sans-serif">proc&eacute;dures d'un
+		moniteur</FONT></P>
+		<LI><P><FONT FACE="Arial Narrow, sans-serif">- la gestion des
+		sections critiques n'est plus a la charge de l'utilisateur, mais
+		elle est r&eacute;alis&eacute;e par le moniteur, puisqu'en fait le
+		moniteur tout entier est implant&eacute; comme une section
+		critique.</FONT></P>
+	</OL>
+	<P><FONT FACE="Arial Narrow, sans-serif">Il utilise des variables de
+	type condition et deux primitives agissant sur elles :</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">- WAIT : bloque le
+	processus appelant et autorise un processus en attente a entrer dans
+	le moniteur</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">- SIGNAL : r&eacute;veille
+	le processus endormi en t&ecirc;te de la file d'attente. Puis, ou
+	bien le processus courant est endormi (solution de Hoare), ou bien
+	le processus courant quitte le moniteur (solution de Brinch Hansen,
+	la plus usitee), afin qu'il n'y ait pas deux processus actifs dans
+	le moniteur.</FONT></P>
+</OL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">Voici une solution du moniteur du
+probl&egrave;me producteur-consommateur :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif"><B>moniteur</B>
+ProdCons /* moniteur, condition : types pr&eacute;d&eacute;finis */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif"><B>condition</B>
+plein, vide</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif"><B>int</B>
+compteur</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">/*
+d&eacute;but du corps du moniteur */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">compteur
+:= 0</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">/*
+fin du corps du moniteur</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">proc&eacute;dure
+ajouter (){</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">if
+compteur = N then WAIT (plein) /* seul un SIGNAL (plein) r&eacute;veillera
+le processus */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">...........
+/* ranger l'objet dans le tampon */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">compteur
+++</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">if
+compteur = 1 then SIGNAL (vide)</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">/*
+r&eacute;veille un processus endormi parce que le tampon &eacute;tait
+vide */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">}</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">proc&eacute;dure
+retirer () {</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">if
+compteur = 0 then WAIT (vide) /* seul un SIGNAL (vide) r&eacute;veillera
+le processus */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">..........
+/* retirer l'objet du tampon */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">compteur
+--</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">if
+compteur = N-1 then SIGNAL (plein)</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">/*
+r&eacute;veille un processus endormi parce que le tampon &eacute;tait
+plein */</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">}</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif"><B>fin
+du moniteur</B></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">proc&eacute;dure
+producteur (){</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">faire
+toujours</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">produire
+(&eacute;l&eacute;ment)</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">ProdCons
+. ajouter ()</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">fin
+faire</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">}</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">proc&eacute;dure
+consommateur (){</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">faire
+toujours</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">retirer
+(&eacute;l&eacute;ment)</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">ProdCons
+. retirer ()</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">fin
+faire</FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">}</FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=4><B>1. Exercices</B></FONT></FONT></P>
+<OL TYPE=a>
+	<LI><P><FONT FACE="Arial Narrow, sans-serif">Le coiffeur endormi</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">En s'inspirant du TD et du
+	canevas coiffeur.c , implanter la solution.</FONT></P>
+	<LI><P><FONT FACE="Arial Narrow, sans-serif">Le parking</FONT></P>
+	<P><FONT FACE="Arial Narrow, sans-serif">L'objectif est de permettre
+	&agrave; un certains nombre de voitures de se garer dans un parking
+	en empruntant une voie unique. Cette voie peut &ecirc;tre emprunt&eacute;e
+	que par une seule voiture &agrave; la fois.</FONT></P>
+	<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">nt
+	NbEntrant=0; //Nombre de voitures voulant emprunter la passerelle
+	pour entrer dans le parking NbSortant=0; //Nombre de voitures
+	voulant emprunter la passerelle pour sortir du parking</FONT></P>
+	<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">int
+	NbV=0; //Nombre de voitures gar&eacute;es dans le parking</FONT></P>
+	<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">Demander_a_emprunter_la_passerelle</FONT></P>
+	<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">Se_Garer</FONT></P>
+	<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">Demander_a_Sortir</FONT></P>
+	<P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">Quitter_la_Passerelle;</FONT></P>
+</OL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<OL TYPE=a START=3>
+	<LI><P STYLE="margin-bottom: 0cm"><FONT FACE="Arial Narrow, sans-serif">Implanter
+	le sch&eacute;ma producteur consommateur avec des moniteurs</FONT></P>
+</OL>
+</BODY>
+</HTML>

@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE> Enonc&eacute; des TP </TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20150317;9550400">
+	<META NAME="CHANGEDBY" CONTENT="Philippe ">
+	<META NAME="CHANGED" CONTENT="20150317;11042700">
+	<STYLE TYPE="text/css">
+	<!--
+		TT.ctl { font-family: "Lohit Hindi", monospace }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="fr-FR" BACKGROUND="/IMAGES/background.gif" DIR="LTR">
+<P>&nbsp; <FONT SIZE=1 STYLE="font-size: 6pt"><FONT FACE="Arial Narrow, sans-serif">Version
+2015 . PDESCAMPs</FONT></FONT></P>
+<TABLE WIDTH=100% CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD WIDTH=86%>
+			<H1 ALIGN=CENTER STYLE="border: none; padding: 0cm"><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif">TP
+			2 - Les tubes</FONT></FONT></H1>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=100%>
+			<P ALIGN=CENTER><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=4><B>P</B></FONT></FONT><FONT FACE="Arial Narrow, sans-serif"><B>r&eacute;ambule</B></FONT>
+ <FONT FACE="Arial Narrow, sans-serif"><BR>Consultez le fichier
+/usr/include/unistd.h et lire le man pour la fonction pipe() </FONT>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif">Un tube de communication est
+un </FONT><FONT FACE="Arial Narrow, sans-serif"><U>tuyau
+unidirectionnel </U></FONT><FONT FACE="Arial Narrow, sans-serif">dans
+lequel un processus &eacute;crit des donn&eacute;es qu'un autre
+processus peut lire.La cr&eacute;ation du tube se fait par la
+primitive : </FONT><FONT FACE="Arial Narrow, sans-serif"><B>int pipe
+(int descripteur [2])</B></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif">En cas de r&eacute;ussite,
+cette primitive cr&eacute;e un tube au sein du noyau et remplit le
+tableau pass&eacute; en argument avec les descripteurs des deux
+extr&eacute;mit&eacute;s. </FONT><FONT FACE="Arial Narrow, sans-serif"><SPAN STYLE="font-weight: normal">Par
+convention, descripteur[0] est la sortie du tube et descripteur[1]
+est l'entr&eacute;e du tube</SPAN></FONT><FONT FACE="Arial Narrow, sans-serif"><B>.</B></FONT>
+<FONT FACE="Arial Narrow, sans-serif"><SPAN STYLE="font-weight: normal">Les
+descripteurs d'un tube sont automatiquement ferm&eacute;s &agrave; la
+terminaison du processus</SPAN></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif">La lecture d'un tube se fait
+par le biais de la primitive read : </FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>int
+read (int descripteur, char buf[], unsigned nbyte). </B></FONT></FONT>
+</P>
+<P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><U>Algorithme
+de lecture est le suivant :</U></FONT></P>
+<P>&bull; <FONT FACE="Arial Narrow, sans-serif">si le tube n&rsquo;est
+pas vide alors extrait au plus taille caract&egrave;res du tube ;</FONT></P>
+<P>&bull; <FONT FACE="Arial Narrow, sans-serif">si le tube est vide
+et s&rsquo;il y a des descripteurs ouverts en &eacute;criture alors
+attend une &eacute;criture dans le tube (la lecture est bloquante par
+d&eacute;faut);</FONT></P>
+<P>&bull; <FONT FACE="Arial Narrow, sans-serif">si le tube est vide
+et s&rsquo;il n&rsquo;y a plus de descripteurs ouverts en &eacute;criture
+alors retourne 0.</FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif">L'&eacute;criture dans un
+tube se fait par le biais de la primitive write : </FONT><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>int
+write</B></FONT></FONT> <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>(int
+descripteur, char buf[], unsigned nbyte). </B></FONT></FONT>
+</P>
+<P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>Par
+d&eacute;faut, une &eacute;criture sur un tube r&eacute;ussit
+toujours mais peut &ecirc;tre &eacute;ventuellement bloquant si le
+buffer allou&eacute; au tube est plein</FONT></FONT></P>
+<P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><U>Algorithme
+d'&eacute;criture est le suivant :</U></FONT></P>
+<P>&bull; <FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>s&rsquo;il
+n&rsquo;y a pas de descripteur en lecture d&rsquo;ouvert alors </FONT></FONT><FONT FACE="Arial Narrow, sans-serif">le
+signal SIGPIPE (broken pipe) est envoy&eacute; au processus &eacute;crivain
+(qui se termine par d&eacute;faut) ;</FONT></P>
+<P>&bull; <FONT FACE="Arial Narrow, sans-serif">s'il y a des
+descripteurs en lecture d&rsquo;ouverts alors l&rsquo;&eacute;criture
+est bloquante par d&eacute;faut, on attend une lecture sur le pipe ;</FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif">Fermeture des descripteurs :
+<B>int close(int descripteur);</B></FONT></P>
+<P STYLE="font-weight: normal"><FONT FACE="Arial Narrow, sans-serif"><U>Conseil
+: toujours fermer les descripteurs dont on a pas besoin</U></FONT></P>
+<P><FONT COLOR="#0000ff"><B><FONT SIZE=4 STYLE="font-size: 16pt"><FONT FACE="Arial Narrow, sans-serif">0
+Pr&eacute;alable</FONT></FONT></B></FONT></P>
+<OL TYPE=a>
+	<LI><P><FONT FACE="Arial Narrow, sans-serif">Examiner le programme
+	</FONT><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><B>prg0.c</B></FONT></FONT></P>
+</OL>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>1
+Communication P&egrave;re Fils</B></FONT></FONT></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif">a) Modifier le programme</FONT><FONT COLOR="#800000">
+</FONT><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><B>prg1.c
+</B></FONT></FONT><FONT FACE="Arial Narrow, sans-serif">de sorte que
+le p&egrave;re et le fils communiquent</FONT> <FONT FACE="Arial Narrow, sans-serif">au
+travers de deux tubes unidirectionnels. </FONT>
+</P>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>2
+Applications </B></FONT></FONT></FONT>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>a)
+<B>Communication du descripteur par buffer</B></FONT></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">A
+partir du programme</SPAN></FONT></FONT> <FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>prg2Ter.c
+, </B></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">&eacute;crivez
+un programme</SPAN></FONT></FONT></FONT><FONT COLOR="#800000">
+</FONT><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>prg2TerFils
+</B></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">qui
+communique avec son p&egrave;re par l'interm&eacute;diaire de son
+buffer. Le fils &eacute;crit, le p&egrave;re lit.</SPAN></FONT></FONT></FONT></P>
+<P><FONT COLOR="#0000ff"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>3
+Utilisation des descripteurs par dup et dup2</B></FONT></FONT></FONT></P>
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=256*>
+	<TR>
+		<TD WIDTH=100% VALIGN=TOP>
+			<P STYLE="font-weight: normal"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>Un
+			processus peut employer les appels syst&egrave;mes dup et dup2
+			pour obtenir une copie du descripteur ouvert. L'int&eacute;r&ecirc;t
+			est de pouvoir modifier les descripteurs d'E/S standard en
+			utlisant des tubes par exemple</FONT></FONT></FONT></P>
+			<P><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>int
+			dup(int descripteur) : Permet d'obtenir une copie du descripteur
+			fourni en argument</B></FONT></FONT></FONT></P>
+			<P><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>int
+			dup2 (int descripteur, int nouveau) : Permet de fermer le
+			descripteur ancien s'il est ouvet, puis de dupliquer
+			&laquo;&nbsp;descripteur&nbsp;&raquo; en lui associant une
+			nouvelle entr&eacute;e</B></FONT></FONT></FONT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>b) <B>Mise en
+&oelig;uvre</B> <B>des tubes par le shell</B>. Utilisation du dup</FONT></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif">Ecrivez un programme </FONT><TT CLASS="western"><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>prg3.c</B></FONT></FONT></FONT></TT><TT CLASS="western">
+</TT><FONT FACE="Arial Narrow, sans-serif">qui reproduit ce que fait
+le shell en interpr&eacute;tant la ligne de commande ls -l </FONT><TT CLASS="western"><FONT FACE="Arial Narrow, sans-serif">|
+wc -l</FONT></TT><FONT FACE="Arial Narrow, sans-serif">. </FONT>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>c) <B>Mise en
+&oelig;uvre des tubes par le shell</B>. Utilisation du dup2</FONT></FONT></P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3>A partir du
+programme </FONT></FONT><TT CLASS="western"><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>prg4.c
+, </B></FONT></FONT></FONT></TT><TT CLASS="western"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">&eacute;crivez
+la fonction</SPAN></FONT></FONT></FONT></TT><TT CLASS="western"><FONT COLOR="#800000">
+</FONT></TT><TT CLASS="western"><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>AppelCommande
+</B></FONT></FONT></FONT></TT><TT CLASS="western"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">tel
+que </SPAN></FONT></FONT></FONT></TT>
+</P>
+<P><TT CLASS="western"><FONT COLOR="#800000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><B>int
+AppelCommande(const char *commande, int fd[2])</B></FONT></FONT></FONT></TT></P>
+<P><TT CLASS="western"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">L'objectif
+est de redirig&eacute; &agrave; la fois l'entr&eacute;e et la sortie
+standard d'un programme qu'il ex&eacute;cute. Ceci permet d'utiliser
+une autre application comme une sous routine du programme. </SPAN></FONT></FONT></FONT></TT>
+</P>
+<P><TT CLASS="western"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">Pour
+tester nous transmettons le contenu d'un fichier texte sur l'entr&eacute;e
+standard et lire la r&eacute;ponse sur sa sortie standard.</SPAN></FONT></FONT></FONT></TT></P>
+<P><TT CLASS="western"><FONT COLOR="#000000"><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><SPAN STYLE="font-weight: normal">Le
+programme appelle successivement wc -w pour avoir le nombre de mots
+et wc &ndash; l pour le nombre de lignes</SPAN></FONT></FONT></FONT></TT></P>
+<P><BR><BR>
+</P>
+<P><BR><BR>
+</P>
+<P><BR><BR>
+</P>
+<BLOCKQUOTE><BR><BR>
+</BLOCKQUOTE>
+<P><BR><BR>
+</P>
+<P><BR><BR>
+</P>
+<P><FONT FACE="Arial Narrow, sans-serif"><FONT SIZE=3><BR>&nbsp; </FONT></FONT>
+</P>
+</BODY>
+</HTML>
