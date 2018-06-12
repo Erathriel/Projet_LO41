@@ -8,8 +8,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <time.h>
+#include <pthread.h>
 
 #define NB_ETAGES 25
+#define CAPACITE_TOTAL 10
+
+FILE* debugFile=NULL;
 
 // Structure definissant un ascenseur
 typedef struct Ascenseur {
@@ -28,9 +33,27 @@ typedef struct Borne
 	
 } Borne;
 
+// Fonction executant les actions de chaque thread
+void *thread(void *arg){
+	
+}
+
+// Fonction de creation de thread avec un ascenceur en argument
+int createThread(pthread_t *t, Ascenseur *asc){
+
+	int ret = pthread_create(t, NULL, thread, (void *) asc);
+	if( ret == -1) {
+		perror("pthread_create error");
+		return EXIT_FAILURE;
+	}
+	return ret;
+
+}
+
 // Fonction permettant le deplacement de l'ascseur de haut en bas
 
 void goTo(Ascenseur asc){
+	debugFile = fopen("log.txt", "w+");
 	//Cas ou l'ascenseur est utilisable
 	if (asc.utilisable)
 	{
@@ -44,11 +67,11 @@ void goTo(Ascenseur asc){
 				asc.etat=2;
 				if (asc.etat==2)
 				{
-					printf("Arret a l'etage : %d\n", asc.etageCourant);
+					fprintf(debugFile,"Arret a l'etage : %d\n", asc.etageCourant);
 					wait(100000);
-					printf("Reprise de chemin\n");
+					fprintf(debugFile,"Reprise de chemin\n");
 				}
-				printf("Etage : %d\n",asc.etageCourant);
+				fprintf(debugFile,"Etage : %d\n",asc.etageCourant);
 			}
 		} 
 		// Fais descendre l'ascenseur
@@ -61,48 +84,52 @@ void goTo(Ascenseur asc){
 				asc.etat=2;
 				if (asc.etat==2)
 				{
-					printf("Arret a l'etage : %d\n", asc.etageCourant);
+					fprintf(debugFile,"Arret a l'etage : %d\n", asc.etageCourant);
 					wait(100000);
-					printf("Reprise de chemin\n");
+					fprintf(debugFile,"Reprise de chemin\n");
 				}
-				printf("Etage : %d\n",asc.etageCourant);
+				fprintf(debugFile,"Etage : %d\n",asc.etageCourant);
 			}
 		} else{
-			printf("Erreur : etage cible ou depart non repertorie...\n");
+			fprintf(debugFile,"Erreur : etage cible ou depart non repertorie...\n");
 		}
 	}
 	// Cas ou l'ascenseur est en panne
 	else {
-		printf("Error : Ascenseur Inutilisable\n");
+		fprintf(debugFile,"Error : Ascenseur Inutilisable\n");
 	}
+	fclose(debugFile);
 }
 
 int main(int argc, char const *argv[])
 {
-	FILE* debugFile=NULL;
-	Ascenseur asc1;
-	//Ascenseur asc2;
-	//Ascenseur asc3;
+	
+	pthread_t thread[3];
+	Ascenseur asc;
 
-	debugFile = fopen("log.txt", "w");
+	for(int i=0; i<3; i++)
+	{
+		createThread(&thread[i], &asc);
+	}
 
-	asc1.id=1;
-	asc1.capacite=5;
-	asc1.etageCourant=5;
-	asc1.etageDepart=asc1.etageCourant;
-	asc1.etageCible=2;
-	asc1.etat=0;
-	asc1.utilisable=false;
+	asc.id=1;
+	asc.capacite=5;
+	asc.etageCourant=5;
+	asc.etageDepart=asc.etageCourant;
+	asc.etageCible=2;
+	asc.etat=0;
+	asc.utilisable=false;
 
-	goTo(asc1);
+	goTo(asc);
 
-	fprintf(debugFile, "%d",asc1.id);
-	fprintf(debugFile,"%d\n", asc1.capacite);
-	fprintf(debugFile,"%d\n", asc1.etageCourant);
-	fprintf(debugFile,"%d\n", asc1.etageDepart);
-	fprintf(debugFile,"%d\n", asc1.etageCible);
-	fprintf(debugFile,"%d\n", asc1.etat);
-	fprintf(debugFile,"%d\n", asc1.utilisable);
+	debugFile = fopen("log.txt", "a");
+	fprintf(debugFile, "%d",asc.id);
+	fprintf(debugFile,"%d\n", asc.capacite);
+	fprintf(debugFile,"%d\n", asc.etageCourant);
+	fprintf(debugFile,"%d\n", asc.etageDepart);
+	fprintf(debugFile,"%d\n", asc.etageCible);
+	fprintf(debugFile,"%d\n", asc.etat);
+	fprintf(debugFile,"%d\n", asc.utilisable);
 	fclose(debugFile);
 	return 0;
 }
