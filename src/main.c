@@ -39,7 +39,6 @@ void *thread(void *asc){
 
 	Ascenseur *ascenseur = (Ascenseur *) asc;
 
-	ascenseur->id=1;
 	ascenseur->capacite=5;
 	ascenseur->etageCourant=5;
 	ascenseur->etageDepart=ascenseur->etageCourant;
@@ -78,7 +77,6 @@ void goTo(Ascenseur asc){
 				if (asc.etat==2)
 				{
 					fprintf(debugFile,"Arret a l'etage : %d\n", asc.etageCourant);
-					wait(100000);
 					fprintf(debugFile,"Reprise de chemin\n");
 				}
 				fprintf(debugFile,"Etage : %d\n",asc.etageCourant);
@@ -95,7 +93,6 @@ void goTo(Ascenseur asc){
 				if (asc.etat==2)
 				{
 					fprintf(debugFile,"Arret a l'etage : %d\n", asc.etageCourant);
-					wait(100000);
 					fprintf(debugFile,"Reprise de chemin\n");
 				}
 				fprintf(debugFile,"Etage : %d\n",asc.etageCourant);
@@ -115,11 +112,12 @@ int main(int argc, char const *argv[])
 {
 	
 	pthread_t thread[NB_ASCENCEUR];
-	Ascenseur asc;
+	Ascenseur asc[NB_ASCENCEUR];
 
 	for(int i=0; i<NB_ASCENCEUR; i++)
 	{
-		createThread(&thread[i], &asc);
+		asc[i].id=i+1;
+		createThread(&thread[i], &asc[i]);
 	}
 
 	//goTo(asc);
@@ -128,21 +126,20 @@ int main(int argc, char const *argv[])
 	{
 		if (pthread_join(thread[k],NULL))
 		{
-
 			perror("pthread_join");
 			return EXIT_FAILURE;
 
 		} else {
 
 			
-			fprintf(debugFile, "On est dans le thread : %d\n", k+1 );
-			fprintf(debugFile, "id : %d\n",asc.id);
-			fprintf(debugFile,"capa : %d\n", asc.capacite);
-			fprintf(debugFile,"etage courant : %d\n", asc.etageCourant);
-			fprintf(debugFile,"etage de depart : %d\n", asc.etageDepart);
-			fprintf(debugFile,"etage cible : %d\n", asc.etageCible);
-			fprintf(debugFile,"etat : %d\n", asc.etat);
-			fprintf(debugFile,"utilisable : %d\n", asc.utilisable);
+			fprintf(debugFile, "On est dans le thread : %d\n", k );
+			fprintf(debugFile, "id : %d\n",asc[k].id);
+			fprintf(debugFile,"capa : %d\n", asc[k].capacite);
+			fprintf(debugFile,"etage courant : %d\n", asc[k].etageCourant);
+			fprintf(debugFile,"etage de depart : %d\n", asc[k].etageDepart);
+			fprintf(debugFile,"etage cible : %d\n", asc[k].etageCible);
+			fprintf(debugFile,"etat : %d\n", asc[k].etat);
+			fprintf(debugFile,"utilisable : %d\n", asc[k].utilisable);
 			
 
 		}
