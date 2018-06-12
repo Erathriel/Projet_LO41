@@ -13,6 +13,7 @@
 
 #define NB_ETAGES 25
 #define CAPACITE_TOTAL 10
+#define NB_ASCENCEUR 3
 
 FILE* debugFile=NULL;
 
@@ -34,8 +35,17 @@ typedef struct Borne
 } Borne;
 
 // Fonction executant les actions de chaque thread
-void *thread(void *arg){
-	
+void *thread(void *asc){
+
+	Ascenseur *ascenseur = (Ascenseur *) asc;
+
+	ascenseur->id=1;
+	ascenseur->capacite=5;
+	ascenseur->etageCourant=5;
+	ascenseur->etageDepart=ascenseur->etageCourant;
+	ascenseur->etageCible=2;
+	ascenseur->etat=0;
+	ascenseur->utilisable=true;
 }
 
 // Fonction de creation de thread avec un ascenceur en argument
@@ -104,32 +114,39 @@ void goTo(Ascenseur asc){
 int main(int argc, char const *argv[])
 {
 	
-	pthread_t thread[3];
+	pthread_t thread[NB_ASCENCEUR];
 	Ascenseur asc;
 
-	for(int i=0; i<3; i++)
+	for(int i=0; i<NB_ASCENCEUR; i++)
 	{
 		createThread(&thread[i], &asc);
 	}
 
-	asc.id=1;
-	asc.capacite=5;
-	asc.etageCourant=5;
-	asc.etageDepart=asc.etageCourant;
-	asc.etageCible=2;
-	asc.etat=0;
-	asc.utilisable=false;
+	//goTo(asc);
+	debugFile = fopen("log.txt", "w");
+	for (int k = 0; k < NB_ASCENCEUR; k++)
+	{
+		if (pthread_join(thread[k],NULL))
+		{
 
-	goTo(asc);
+			perror("pthread_join");
+			return EXIT_FAILURE;
 
-	debugFile = fopen("log.txt", "a");
-	fprintf(debugFile, "%d",asc.id);
-	fprintf(debugFile,"%d\n", asc.capacite);
-	fprintf(debugFile,"%d\n", asc.etageCourant);
-	fprintf(debugFile,"%d\n", asc.etageDepart);
-	fprintf(debugFile,"%d\n", asc.etageCible);
-	fprintf(debugFile,"%d\n", asc.etat);
-	fprintf(debugFile,"%d\n", asc.utilisable);
+		} else {
+
+			
+			fprintf(debugFile, "On est dans le thread : %d\n", k+1 );
+			fprintf(debugFile, "id : %d\n",asc.id);
+			fprintf(debugFile,"capa : %d\n", asc.capacite);
+			fprintf(debugFile,"etage courant : %d\n", asc.etageCourant);
+			fprintf(debugFile,"etage de depart : %d\n", asc.etageDepart);
+			fprintf(debugFile,"etage cible : %d\n", asc.etageCible);
+			fprintf(debugFile,"etat : %d\n", asc.etat);
+			fprintf(debugFile,"utilisable : %d\n", asc.utilisable);
+			
+
+		}
+	}
 	fclose(debugFile);
 	return 0;
 }

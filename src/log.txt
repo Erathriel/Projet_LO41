@@ -1,7 +1,24 @@
-Error : Ascenseur Inutilisable
-15
-5
-5
-2
-0
-0
+On est dans le thread : 1
+id : 1
+capa : 5
+etage courant : 5
+etage de depart : 5
+etage cible : 2
+etat : 0
+utilisable : 1
+On est dans le thread : 2
+id : 1
+capa : 5
+etage courant : 5
+etage de depart : 5
+etage cible : 2
+etat : 0
+utilisable : 1
+On est dans le thread : 3
+id : 1
+capa : 5
+etage courant : 5
+etage de depart : 5
+etage cible : 2
+etat : 0
+utilisable : 1
