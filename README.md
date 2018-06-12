@@ -2,7 +2,7 @@
 
 Commande git :
 
-git config user.name nomDeCompte
-git config user.mail mailDuCompte
+git config --global user.name "nomDeCompte"
+git config --global user.mail mailDuCompte
 
-git pull -> git qdd . -> git commit -> git push
+git pull -> git add . -> git commit -> git push
