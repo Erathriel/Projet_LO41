@@ -22,24 +22,6 @@ FILE* debugFile=NULL;
 
 pthread_mutex_t mutex;
 pthread_cond_t up, down;
-struct sembuf sem_oper_P;
-
-
-void P(int semnum,int idAsc)
-{
-	sem_oper_P.sem_num = semnum;
-	sem_oper_P.sem_op = -1;
-	sem_oper_P.sem_flg = 0;
-}
-struct sembuf sem_oper_V;
-
-void V(int semnum, int idAsc)
-{
-	sem_oper_V.sem_num = semnum;
-	sem_oper_V.sem_op = 1;
-	sem_oper_V.sem_flg = 0;
-}
-
 
 
 
@@ -235,7 +217,7 @@ int createThreadHab(pthread_t *t, Habitant *hab)
 	}
 	return ret;
 }
-
+/*
 void callAsc(Habitant *habitant,Ascenseur asc[])
 {
 	bool prisEnCharge=false;
@@ -243,11 +225,11 @@ void callAsc(Habitant *habitant,Ascenseur asc[])
 	{
 		if (asc[i]->etat==habitant->direction)
 		{
-			V(habitant->etageDepart,i);
+	
 		}
 	}
 }
-
+*/
 
 
 
