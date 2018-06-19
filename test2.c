@@ -20,7 +20,8 @@
 
 FILE* debugFile=NULL;
 
-
+pthread_mutex_t mutex;
+pthread_cond_t up, down;
 struct sembuf sem_oper_P;
 
 
@@ -119,6 +120,7 @@ void goTo(Ascenseur asc){
 		// Fais monter l'ascenseur
 		if (asc.etageDepart<asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
+			pthread_cond_wait(&down,&mutex);
 			for (int i = asc.etageDepart; i < asc.etageCible; ++i)
 			{
 				asc.etat=1;
@@ -131,10 +133,12 @@ void goTo(Ascenseur asc){
 				}
 				fprintf(debugFile,"Etage : %d\n",asc.etageCourant);
 			}
+			pthread_cond_signal(&down);
 		} 
 		// Fais descendre l'ascenseur
 		else if (asc.etageDepart>asc.etageCible && asc.etageCible<NB_ETAGES)
 		{
+			pthread_cond_wait(&up,&mutex);
 			for (int i = asc.etageDepart; i > asc.etageCible; --i)
 			{
 				asc.etat=1;
@@ -147,6 +151,7 @@ void goTo(Ascenseur asc){
 				}
 				fprintf(debugFile,"Etage : %d\n",asc.etageCourant);
 			}
+			pthread_cond_signal(&up);
 		} else{
 			fprintf(debugFile,"Erreur : etage cible ou depart non repertorie...\n");
 		}
@@ -253,6 +258,9 @@ typedef struct Borne
 } Borne;
 int main(int argc, char const *argv[])
 {
+	pthread_mutex_init(&mutex,0);
+	pthread_cond_init(&down,0);
+	pthread_cond_init(&up,0);
 	pthread_t threadAsc[NB_ASCENSEUR];
 	Ascenseur asc[NB_ASCENSEUR];
 
@@ -310,5 +318,8 @@ int main(int argc, char const *argv[])
 		}
 	}
 	fclose(debugFile);
+	pthread_mutex_destroy(&mutex);
+	pthread_cond_destroy(&up);
+	pthread_cond_destroy(&down);
 	return 0;
 }
