@@ -8,13 +8,13 @@ etage cible : 0
 etage cible : 0
 etage cible : 0
 etage cible : 0
+etage cible : 0
+etage cible : 1
 etage cible : 2
-etage cible : 0
-etage cible : 0
-etage cible : 0
-etage cible : 0
+etage cible : 6
+etage cible : 9
 etat : 0
-utilisable : 0
+utilisable : 1
 
 On est dans le thread : 1
 id : 1
@@ -26,13 +26,13 @@ etage cible : 0
 etage cible : 0
 etage cible : 0
 etage cible : 0
+etage cible : 0
+etage cible : 1
 etage cible : 2
-etage cible : 0
-etage cible : 0
-etage cible : 0
-etage cible : 0
+etage cible : 6
+etage cible : 9
 etat : 0
-utilisable : 1
+utilisable : 0
 
 On est dans le thread : 2
 id : 2
@@ -44,30 +44,30 @@ etage cible : 0
 etage cible : 0
 etage cible : 0
 etage cible : 0
+etage cible : 0
+etage cible : 1
 etage cible : 2
-etage cible : 0
-etage cible : 0
-etage cible : 0
-etage cible : 0
+etage cible : 6
+etage cible : 9
 etat : 0
 utilisable : 1
 
 On est dans le thread Habitant : 0
 id: 0
-etage de depart: 18 
-etage cible: 25 
-On est dans le thread Habitant : 1
-id: 1
 etage de depart: 16 
 etage cible: 19 
+On est dans le thread Habitant : 1
+id: 1
+etage de depart: 22 
+etage cible: 13 
 On est dans le thread Habitant : 2
 id: 2
 etage de depart: 11 
 etage cible: 12 
 On est dans le thread Habitant : 3
 id: 3
-etage de depart: 22 
-etage cible: 13 
+etage de depart: 18 
+etage cible: 25 
 On est dans le thread Habitant : 4
 id: 4
 etage de depart: 3 

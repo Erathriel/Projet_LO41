@@ -71,23 +71,22 @@ void tomberEnPanne(Ascenseur *asc){
 
 void ordonnerEtage(Ascenseur *asc)
 {
-    int i;
-    int t[CAPACITE_TOTAL];
-    for (i=0;i < CAPACITE_TOTAL;i++)
+    for (int i = CAPACITE_TOTAL-1 ; i > 1 ; i--)
     {
-        t[i]=asc->etageCible[i];
+    	for (int j = 0; j < i; ++j)
+    	{
+    		if(asc->etageCible[j+1]<asc->etageCible[j]){
+    			int tmp=asc->etageCible[j+1];
+    			asc->etageCible[j+1]=asc->etageCible[j];
+    			asc->etageCible[j]=tmp;
+    		}
+    	}
     }
-        for (i=0;i < CAPACITE_TOTAL-1;i++)
-        {
-            if (t[i]>t[i+1])
-            {
-            	printf("%d\n",t[i] );
-            	printf("%d\n",t[i+1] );
-                asc->etageCible[i]=t[i+1];
-                asc->etageCible[i+1]=t[i];
-            }
-        }
- 
+    for (int i = 0; i < CAPACITE_TOTAL; ++i)
+    {
+    	printf("etage cible : %d\n", asc->etageCible[i]);
+    }
+    printf("----------------------------------\n");
 }
 
 // Fonction executant les actions de chaque threadAscenseur
@@ -99,6 +98,9 @@ void *threadAsc(void *asc){
 	ascenseur->etageCourant=5;
 	ascenseur->etageDepart=ascenseur->etageCourant;
 	ascenseur->etageCible[4]=2;
+	ascenseur->etageCible[3]=6;
+	ascenseur->etageCible[2]=1;
+	ascenseur->etageCible[5]=9;	
 	ascenseur->etat=0;
 	ascenseur->utilisable=true;
 	tomberEnPanne(ascenseur);
