@@ -235,6 +235,7 @@ void goTo(Ascenseur asc){
 				asc.etageCourant--;
 			}
 		}
+		asc.etat=0;
 	}
 	fclose(debugFile);
 }
