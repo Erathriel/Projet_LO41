@@ -57,7 +57,7 @@ void ascenseurInit(Ascenseur *this,int id)
 	this->utilisable=true;
 }
 
-// fais tomber en panne de maniere aleatoire les ascenseur
+// fait tomber en panne de maniere aleatoire les ascenseur
 void tomberEnPanne(Ascenseur *asc){
 	int panne = (rand() % (1 - 0 + 1)) + 0;
 	if (panne==0)
@@ -69,6 +69,7 @@ void tomberEnPanne(Ascenseur *asc){
 	}
 }
 
+// Ordonne les etages attribue a un ascenseur
 void ordonnerEtage(Ascenseur *asc)
 {
     for (int i = CAPACITE_TOTAL-1 ; i > 1 ; i--)
@@ -82,11 +83,6 @@ void ordonnerEtage(Ascenseur *asc)
     		}
     	}
     }
-    for (int i = 0; i < CAPACITE_TOTAL; ++i)
-    {
-    	printf("etage cible : %d\n", asc->etageCible[i]);
-    }
-    printf("----------------------------------\n");
 }
 
 // Fonction executant les actions de chaque threadAscenseur

@@ -62,12 +62,12 @@ etage de depart: 22
 etage cible: 13 
 On est dans le thread Habitant : 2
 id: 2
-etage de depart: 11 
-etage cible: 12 
-On est dans le thread Habitant : 3
-id: 3
 etage de depart: 18 
 etage cible: 25 
+On est dans le thread Habitant : 3
+id: 3
+etage de depart: 11 
+etage cible: 12 
 On est dans le thread Habitant : 4
 id: 4
 etage de depart: 3 
