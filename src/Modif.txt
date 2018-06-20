@@ -1,6 +1,6 @@
 Coder Etre actif
 Coder habitant est dans l'ascenseur ou non
-Coder arrivé à destination d'un utilisateur
+Coder arrivé à destination d'un utilisateur ( pthread exit de l'utilisateur )
 Coder Mise en veille de l'ascenseur ( Mettre étage cible à -1 et non 0 initalement )
 Faire fonctionner Go to avec les ajouts precédents...
 25 personne max
