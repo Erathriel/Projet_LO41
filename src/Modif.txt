@@ -1,16 +1,5 @@
-Modifier etageCible en tableau de taille max = à la capacité
-
-Créer la fonction initAscenseur(Ascenceur *asc)
-
-objectif de la fonction :
-  Mettre les 3 ascenseurs au valeur suivante :
-    	id= 1/2/3
-      capacite = 5
-      etageCourant = 0
-      *etageCible = 0
-      etageDepart = 0
-      etat = 0
-      utilisable = true
-      
-Copie mon code et fais déjà ça dans un fichier test.c et je regarde ce soir tu mettra la ligne de compilation dans le makefile pour compiler
-plus simple.
+Coder Etre actif
+Coder interraction ascenseur personne avec segment ou file message
+Coder habitant est dans l'ascenseur ou non
+Coder arrivé à destination d'un utilisateur
+Coder Mise en veille de l'ascenseur ( Mettre étage cible à -1 et non 0 initalement )
