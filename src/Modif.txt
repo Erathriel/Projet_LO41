@@ -1,5 +1,7 @@
 Coder Etre actif
-Coder interraction ascenseur personne avec segment ou file message
 Coder habitant est dans l'ascenseur ou non
 Coder arrivé à destination d'un utilisateur
 Coder Mise en veille de l'ascenseur ( Mettre étage cible à -1 et non 0 initalement )
+Faire fonctionner Go to avec les ajouts precédents...
+25 personne max
+Coder interraction ascenseur personne avec segment ou file message
