@@ -57,6 +57,7 @@ void ascenseurInit(Ascenseur *this,int id)
 	this->utilisable=true;
 }
 
+// fais tomber en panne de maniere aleatoire les ascenseur
 void tomberEnPanne(Ascenseur *asc){
 	int panne = (rand() % (1 - 0 + 1)) + 0;
 	if (panne==0)
@@ -68,6 +69,27 @@ void tomberEnPanne(Ascenseur *asc){
 	}
 }
 
+void ordonnerEtage(Ascenseur *asc)
+{
+    int i;
+    int t[CAPACITE_TOTAL];
+    for (i=0;i < CAPACITE_TOTAL;i++)
+    {
+        t[i]=asc->etageCible[i];
+    }
+        for (i=0;i < CAPACITE_TOTAL-1;i++)
+        {
+            if (t[i]>t[i+1])
+            {
+            	printf("%d\n",t[i] );
+            	printf("%d\n",t[i+1] );
+                asc->etageCible[i]=t[i+1];
+                asc->etageCible[i+1]=t[i];
+            }
+        }
+ 
+}
+
 // Fonction executant les actions de chaque threadAscenseur
 void *threadAsc(void *asc){
 
@@ -76,10 +98,11 @@ void *threadAsc(void *asc){
 	ascenseur->capacite=5;
 	ascenseur->etageCourant=5;
 	ascenseur->etageDepart=ascenseur->etageCourant;
-	ascenseur->etageCible[0]=2;
+	ascenseur->etageCible[4]=2;
 	ascenseur->etat=0;
 	ascenseur->utilisable=true;
 	tomberEnPanne(ascenseur);
+	ordonnerEtage(ascenseur);
 	/*while (1)
 	{
 		etreActif(&ascenseur);
@@ -266,7 +289,7 @@ int main(int argc, char const *argv[])
 	}
 
 	//goTo(asc);
-	debugFile = fopen("log.txt", "a");
+	debugFile = fopen("log.txt", "w+");
 	for (int k = 0; k < NB_ASCENSEUR; k++)
 	{
 		if (pthread_join(threadAsc[k],NULL))
