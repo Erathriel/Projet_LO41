@@ -122,17 +122,53 @@ void *threadAsc(void *asc){
 
 	Ascenseur *ascenseur = (Ascenseur *) asc;
 
-	ascenseur->capacite=5;
-	ascenseur->etageCourant=5;
-	ascenseur->etageDepart=ascenseur->etageCourant;
-	ascenseur->etageCible[4]=2;
-	ascenseur->etageCible[3]=6;
-	ascenseur->etageCible[2]=1;
-	ascenseur->etageCible[5]=9;	
-	ascenseur->etat=0;
-	ascenseur->utilisable=true;
-	tomberEnPanne(ascenseur);
-	ordonnerEtage(ascenseur);
+	if (ascenseur->id == 0)
+	{
+		ascenseur->capacite=5;
+		ascenseur->etageCourant=5;
+		ascenseur->etageDepart=ascenseur->etageCourant;
+		ascenseur->etageCible[4]=2;
+		ascenseur->etageCible[3]=6;
+		ascenseur->etageCible[2]=1;
+		ascenseur->etageCible[5]=9;	
+		ascenseur->etat=0;
+		ascenseur->utilisable=true;
+		tomberEnPanne(ascenseur);
+		ordonnerEtage(ascenseur);
+	}
+	else if (ascenseur->id == 1)
+	{
+		ascenseur->capacite=6;
+		ascenseur->etageCourant=1;
+		ascenseur->etageDepart=ascenseur->etageCourant;
+		ascenseur->etageCible[4]=3;
+		ascenseur->etageCible[3]=7;
+		ascenseur->etageCible[2]=2;
+		ascenseur->etageCible[5]=10;	
+		ascenseur->etat=0;
+		ascenseur->utilisable=true;
+		tomberEnPanne(ascenseur);
+		ordonnerEtage(ascenseur);
+	} 
+	else if (ascenseur->id == 2)
+	{
+		ascenseur->capacite=5;
+		ascenseur->etageCourant=5;
+		ascenseur->etageDepart=ascenseur->etageCourant;
+		ascenseur->etageCible[4]=2;
+		ascenseur->etageCible[3]=6;
+		ascenseur->etageCible[2]=1;
+		ascenseur->etageCible[5]=9;	
+		ascenseur->etat=0;
+		ascenseur->utilisable=true;
+		tomberEnPanne(ascenseur);
+		ordonnerEtage(ascenseur);
+	}
+	else
+	{
+		printf("error : threadAsc\n");
+		pthread_exit(NULL);
+	}
 }
 // Fonction de creation de thread avec un ascenceur en argument
 // OK

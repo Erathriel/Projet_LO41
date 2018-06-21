@@ -5,3 +5,11 @@ Coder Mise en veille de l'ascenseur ( Mettre étage cible à -1 et non 0 initale
 Faire fonctionner Go to avec les ajouts precédents...
 25 personne max
 Coder interraction ascenseur personne avec segment ou file message
+
+
+//-------------------------------//
+
+Geoffrey pense bete 
+
+Tester de donner des valeur differentes au thread asc
+Et surtout comment donner des valeurs via segments
