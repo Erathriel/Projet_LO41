@@ -33,6 +33,7 @@ pthread_cond_t up, down,veille,waitAsc;
 /*************************************************************************************/
 
 // Structure definissant un ascenseur
+// OK
 typedef struct Ascenseur 
 {
 	int id;
@@ -45,13 +46,14 @@ typedef struct Ascenseur
 } Ascenseur;
 
 // Initialisation d'un ascenceur définit les valeurs à 0
+// OK
 void ascenseurInit(Ascenseur *this,int id)
 {
 	this->id=id;
 	this->capacite=0;
 	this->etageCourant=0;
 	for(int i =0; i<CAPACITE_TOTAL;i++){
-		this->etageCible[i]=0;
+		this->etageCible[i]=-1; // initialise la liste des etages cible a -1 car 0 est le rez de chaussee
 	}
 	this->etageDepart=0;
 	this->etat=0;
@@ -59,7 +61,8 @@ void ascenseurInit(Ascenseur *this,int id)
 }
 
 // fait tomber en panne de maniere aleatoire les ascenseur
-void tomberEnPanne(Ascenseur *asc){
+// OK
+bool tomberEnPanne(Ascenseur *asc){
 	int panne = (rand() % (1 - 0 + 1)) + 0;
 	if (panne==0)
 	{
@@ -68,9 +71,13 @@ void tomberEnPanne(Ascenseur *asc){
 	else {
 		asc->utilisable=true;
 	}
+	return asc->utilisable;
 }
 
+
+
 // Ordonne les etages attribue a un ascenseur
+// OK
 void ordonnerEtage(Ascenseur *asc)
 {
     for (int i = CAPACITE_TOTAL-1 ; i > 1 ; i--)
@@ -87,6 +94,7 @@ void ordonnerEtage(Ascenseur *asc)
 }
 
 //Place les -1 en fin de liste
+// Why ??
 void moveminusone(Ascenseur *asc)
 {
 	int countMinus=0;
@@ -125,13 +133,9 @@ void *threadAsc(void *asc){
 	ascenseur->utilisable=true;
 	tomberEnPanne(ascenseur);
 	ordonnerEtage(ascenseur);
-	/*while (1)
-	{
-		//etreActif(&ascenseur);
-		
-	}*/
 }
 // Fonction de creation de thread avec un ascenceur en argument
+// OK
 int createThreadAsc(pthread_t *t, Ascenseur *asc){
 
 	int ret = pthread_create(t, NULL, threadAsc, (void *) asc);
@@ -241,7 +245,8 @@ void goTo(Ascenseur asc){
 /*                                                                                   */
 /*************************************************************************************/
 
-//Structure habitant
+// Structure habitant
+// OK
 typedef struct Habitant
 {
 	int id;
@@ -250,7 +255,8 @@ typedef struct Habitant
 	int direction; //1=up 2=down
 } Habitant;
 
-//Initialisation d'un habitant
+// Initialisation d'un habitant
+// OK
 void habitantInit(Habitant *this, int id)
 {
 	this->id=id;
@@ -280,11 +286,12 @@ void * threadHab (void *hab)
 	}
 	usleep((rand()%10+1)*100000); //attend entre 1 et 10 secondes pour prendre l'asc
 	//callAsc(&habitant);
-	pthread_exit();
+	pthread_exit(0);
 	
 }
 
-//Fonction pour créer les thread habitants
+// Fonction pour créer les thread habitants
+// OK
 int createThreadHab(pthread_t *t, Habitant *hab)
 {
 	int ret = pthread_create(t,NULL,threadHab, (void *) hab);
@@ -298,7 +305,7 @@ int createThreadHab(pthread_t *t, Habitant *hab)
 
 
 
-
+// A quoi sert vivre ?
 void vivre( Habitant *hab)
 {
 	pthread_mutex_lock(&mutex);
@@ -312,10 +319,10 @@ void vivre( Habitant *hab)
 
 
 // Structure definissant la borne
-typedef struct Borne
+/*typedef struct Borne
 {
 	
-} Borne;
+} Borne;*/
 int main(int argc, char const *argv[])
 {
 	//Initialisation des mutex
