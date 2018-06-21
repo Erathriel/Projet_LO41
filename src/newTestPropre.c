@@ -21,8 +21,13 @@
 FILE* debugFile=NULL;
 bool etageAppelant[NB_ETAGES];
 
-pthread_mutex_t mutex;
-pthread_cond_t up, down,veille,waitAsc;
+// Initialisation du mutex
+pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;
+// Initialisation des conditions
+pthread_cond_t up = PTHREAD_COND_INITIALIZER;
+pthread_cond_t down = PTHREAD_COND_INITIALIZER;
+pthread_cond_t veille = PTHREAD_COND_INITIALIZER;
+pthread_cond_t waitAsc = PTHREAD_COND_INITIALIZER;
 
 
 
@@ -93,8 +98,23 @@ void ordonnerEtage(Ascenseur *asc)
     }
 }
 
+void miseEnVeille(Ascenseur *asc)
+{
+	int compteur;
+	for (int i = 0; i < CAPACITE_TOTAL; ++i)
+	{
+		if (asc->etageCible[i]==-1)
+		{
+			compteur++;
+		}
+	}
+	if (compteur==CAPACITE_TOTAL)
+	{
+		asc->etat=0;
+	}
+}
+
 //Place les -1 en fin de liste
-// Why ??
 void moveminusone(Ascenseur *asc)
 {
 	int countMinus=0;
@@ -117,9 +137,11 @@ void moveminusone(Ascenseur *asc)
 	}
 	
 }
+
 // Fonction executant les actions de chaque threadAscenseur
 void *threadAsc(void *asc){
 
+	pthread_mutex_lock (&mutex);
 	Ascenseur *ascenseur = (Ascenseur *) asc;
 
 	if (ascenseur->id == 0)
@@ -133,8 +155,6 @@ void *threadAsc(void *asc){
 		ascenseur->etageCible[5]=9;	
 		ascenseur->etat=0;
 		ascenseur->utilisable=true;
-		tomberEnPanne(ascenseur);
-		ordonnerEtage(ascenseur);
 	}
 	else if (ascenseur->id == 1)
 	{
@@ -147,8 +167,6 @@ void *threadAsc(void *asc){
 		ascenseur->etageCible[5]=10;	
 		ascenseur->etat=0;
 		ascenseur->utilisable=true;
-		tomberEnPanne(ascenseur);
-		ordonnerEtage(ascenseur);
 	} 
 	else if (ascenseur->id == 2)
 	{
@@ -161,14 +179,13 @@ void *threadAsc(void *asc){
 		ascenseur->etageCible[5]=9;	
 		ascenseur->etat=0;
 		ascenseur->utilisable=true;
-		tomberEnPanne(ascenseur);
-		ordonnerEtage(ascenseur);
 	}
 	else
 	{
-		printf("error : threadAsc\n");
-		pthread_exit(NULL);
+		tomberEnPanne(ascenseur);
+		ordonnerEtage(ascenseur);
 	}
+	pthread_mutex_unlock (&mutex);
 }
 // Fonction de creation de thread avec un ascenceur en argument
 // OK
@@ -361,11 +378,6 @@ void vivre( Habitant *hab)
 } Borne;*/
 int main(int argc, char const *argv[])
 {
-	//Initialisation des mutex
-	pthread_mutex_init(&mutex,0);
-	pthread_cond_init(&down,0);
-	pthread_cond_init(&up,0);
-	pthread_cond_init(&veille,0);
 	//Déclaration des thread Ascenseur
 	pthread_t threadAsc[NB_ASCENSEUR];
 	Ascenseur asc[NB_ASCENSEUR];
