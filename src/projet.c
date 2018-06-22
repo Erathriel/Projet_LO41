@@ -19,12 +19,12 @@
 #define NB_ETAGES 25
 #define CAPACITE_TOTAL 10
 #define NB_ASCENSEUR 3
-#define NB_HABITANT 5
+#define NB_HABITANT 15
 
 
 struct mesg_buffer{
 	long mesg_type;
-	int mesg_text[1];
+	int* mesg_text;
 } message;
 
 	
@@ -160,36 +160,39 @@ printf("\nthreadAsc\n");
 	if (ascenseur->id == 0)
 	{
 		ascenseur->capacite=5;
-		ascenseur->etageCourant=5;
+		ascenseur->etageCourant=0;
 		ascenseur->etageDepart=ascenseur->etageCourant;
-		ascenseur->etageCible[4]=2;
-		ascenseur->etageCible[3]=6;
-		ascenseur->etageCible[2]=1;
-		ascenseur->etageCible[5]=9;	
+		ascenseur->etageCible[0]=-1;
+		ascenseur->etageCible[1]=-1;
+		ascenseur->etageCible[2]=-1;
+		ascenseur->etageCible[3]=-1;
+		ascenseur->etageCible[4]=-1;	
 		ascenseur->etat=0;
 		ascenseur->utilisable=true;
 	}
 	else if (ascenseur->id == 1)
 	{
 		ascenseur->capacite=6;
-		ascenseur->etageCourant=1;
+		ascenseur->etageCourant=0;
 		ascenseur->etageDepart=ascenseur->etageCourant;
-		ascenseur->etageCible[4]=3;
-		ascenseur->etageCible[3]=7;
-		ascenseur->etageCible[2]=2;
-		ascenseur->etageCible[5]=10;	
+		ascenseur->etageCible[0]=-1;
+		ascenseur->etageCible[1]=-1;
+		ascenseur->etageCible[2]=-1;
+		ascenseur->etageCible[3]=-1;
+		ascenseur->etageCible[4]=-1;
 		ascenseur->etat=0;
 		ascenseur->utilisable=true;
 	} 
 	else if (ascenseur->id == 2)
 	{
 		ascenseur->capacite=5;
-		ascenseur->etageCourant=5;
+		ascenseur->etageCourant=0;
 		ascenseur->etageDepart=ascenseur->etageCourant;
-		ascenseur->etageCible[4]=2;
-		ascenseur->etageCible[3]=6;
-		ascenseur->etageCible[2]=1;
-		ascenseur->etageCible[5]=9;	
+		ascenseur->etageCible[0]=-1;
+		ascenseur->etageCible[1]=-1;
+		ascenseur->etageCible[2]=-1;
+		ascenseur->etageCible[3]=-1;
+		ascenseur->etageCible[4]=-1;	
 		ascenseur->etat=0;
 		ascenseur->utilisable=true;
 	}
@@ -198,12 +201,12 @@ printf("\nthreadAsc\n");
 		tomberEnPanne(ascenseur);
 		ordonnerEtage(ascenseur);
 	}
-	//while(1)
-	//{	
-printf("\ngoto\n");
+	while(1)
+	{	
+printf("\ngoto etageCourant %ietageCible %i\n",ascenseur->etageCourant,ascenseur->etageCible[0]);
+
 		goTo(ascenseur);
-printf("\ncheck8\n");
-	//}
+	}
 }
 // Fonction de creation de thread avec un ascenceur en argument
 // OK
@@ -220,9 +223,10 @@ int createThreadAsc(pthread_t *t, Ascenseur *asc){
 
 
 
-void goTo(Ascenseur asc)
+void goTo(Ascenseur *asc)
 {
-	if(asc.utilisable)
+/*printf("\n%i    !=      %i   ;   %i    <   %i   ;         !=      %i\n",asc->etageCourant,asc->etageCible[0], asc->etageCourant, NB_ETAGES+5,CAPACITE_TOTAL);*/
+	if(asc->utilisable)
 	{
 		printf("dors en attendant l'habitant");
 		P(10000);//Dors si pas appellé
@@ -234,34 +238,41 @@ void goTo(Ascenseur asc)
 		msgrcv(msgid, &message,sizeof(message),1,0);
 		//On ordonne pour bien placer l'étage ciblé		
 		ordonnerEtage(&asc);
-		asc.etageCible[0]=message.mesg_text;
+	//printf("\n%i\n",message.mesg_text);
+		asc->etageCible[0]=message.mesg_text;
+/*printf("\n%i\n",message.mesg_text);*/
 		ordonnerEtage(&asc);
 		moveminusone(&asc);
-		if(asc.etageCible[0]!=-1){
+		if(asc->etageCible[0]!=-1){
+//printf("\na une cible\n");
 			int countminus=4;
+/*printf("\n%i    !=      %i   ;   %i    <   %i   ;      %i   !=      %i\n",asc->etageCourant,asc->etageCible[0], asc->etageCourant, NB_ETAGES+5,countminus,CAPACITE_TOTAL);*/
 			//Asc va chercher quelquun et asc vide
-			while((asc.etageCourant!=asc.etageCible[0])&&(asc.etageCourant<NB_ETAGES+5)&&(countminus!=CAPACITE_TOTAL))
+			while((asc->etageCourant!=asc->etageCible[0]) &&(asc->etageCourant<NB_ETAGES+5)&& (countminus!=CAPACITE_TOTAL))
 			{	
-				if(asc.etageCourant<asc.etageCible[0]){
-					usleep(100000);//Temps de monter
-					asc.etageCourant++;
-				}else if(asc.etageCourant<asc.etageCible[0]){
-					usleep(100000);
-					asc.etageCourant--;
-				}
-				if(asc.etageCourant==asc.etageCible[0])
+/*printf("\nbouge tant qu'il y a du client%i  ,    %i\n",asc->etageCourant,asc->etageCible[0]);*/
+				if(asc->etageCourant<asc->etageCible[0]){
+					usleep(1000000);//Temps de monter
+					asc->etageCourant++;
+				printf("asc vient de prendre un etage");
+				}else if(asc->etageCourant<asc->etageCible[0]){
+					usleep(1000000);
+					asc->etageCourant--;
+printf("asc vient de perdre un etage");
+				}else{printf("error");}
+				if(asc->etageCourant==asc->etageCible[0])
 				{
 					countminus=0;
-					asc.etageCible[0]=-1;
-					V(asc.etageCourant);
+					asc->etageCible[0]=-1;
+					V(asc->etageCourant);
 					usleep(100000);
 					msgrcv(msgid, &message,sizeof(message),1,IPC_NOWAIT);
 					ordonnerEtage(&asc);
-					asc.etageCible[0]=message.mesg_text;
+					asc->etageCible[0]=message.mesg_text;
 					ordonnerEtage(&asc);
 					moveminusone(&asc);
 					for(int i =0; i<CAPACITE_TOTAL;i++)
-					{	if(asc.etageCible[0]==-1)
+					{	if(asc->etageCible[0]==-1)
 						{
 							countminus++;
 						}
@@ -320,7 +331,7 @@ void * threadHab (void *hab)
 	}
 
 	int sleep = (rand()%10+1)*1000000;
-	printf("\nattente de %i secondes avant de partir\n",sleep/1000000);	
+	printf("\nattente de %i secondes avant de partir habitant%i de %i vers%i \n",sleep/1000000,habitant->id ,habitant->etageDepart ,habitant->etageCible);	
 	usleep(sleep); //attend entre 1 et 10 secondes pour prendre l'asc
 	
 	vivre(habitant);
@@ -351,7 +362,7 @@ void vivre( Habitant *hab)
 	key= ftok("key1", 6666);  
 	msgid = msgget(key,0666  | IPC_CREAT);
 	message.mesg_type=1;
-	message.mesg_text[0]=hab->etageDepart;
+	message.mesg_text=hab->etageDepart;
 	msgsnd(msgid, &message,sizeof(message),0);
 	printf("Essaye d'appeler l'asc");
 	//Envoie message
@@ -361,12 +372,13 @@ void vivre( Habitant *hab)
 	P(hab->etageDepart);
 	
 	
-	message.mesg_text[0]=hab->etageCible;
+	message.mesg_text=hab->etageCible;
 	msgsnd(msgid, &message,sizeof(message),0);
 	//Envoie destination
 	printf("\nHabitant %i attend dans l'asc pour aller %i \n",hab->id,hab->etageCible);
 	P(hab->etageCible);
 	printf("\nHabitant %i arrivé %i\n",hab->id,hab->etageCible);
+	pthread_exit(0);
 
 }
 
@@ -377,9 +389,7 @@ void vivre( Habitant *hab)
 } Borne;*/
 int main(int argc, char const *argv[])
 {
-printf("\nmain\n");	
-
-
+	printf("\nmain\n");	
 	//Déclaration des thread Ascenseur
 	pthread_t threadAsc[NB_ASCENSEUR];
 	Ascenseur asc[NB_ASCENSEUR];
@@ -394,10 +404,10 @@ printf("\nmain\n");
 	}
 
 	//goTo(asc);
-	debugFile = fopen("log.txt", "w+");
+	/*debugFile = fopen("log.txt", "w+");*/
 	/*for (int k = 0; k < NB_ASCENSEUR; k++)
 	{
-printf("flog asc");
+	printf("flog asc");
 		if (pthread_join(threadAsc[k],NULL))
 		{
 			perror("pthread_join");
@@ -425,7 +435,7 @@ printf("flog asc");
 	Habitant hab[NB_HABITANT];
 	for(int i = 0; i<NB_HABITANT; i++)
 	{
-	printf("\nCreation du habitant asc %i\n",i);
+	printf("\nCreation de l'habitant %i\n",i);
 		habitantInit(&hab[i],i);
 		createThreadHab(&threadHab[i],&hab[i]);
 		printf("\nthread habitant %i créé\n",i);
@@ -436,13 +446,13 @@ printf("flog asc");
 		{
 			perror("pthread_join");
 			return EXIT_FAILURE;
-		}else{
+		}/*else{
 			fprintf(debugFile,"On est dans le thread Habitant : %i\n", k);
 			fprintf(debugFile,"id: %i\n", hab[k].id);
 			fprintf(debugFile,"etage de depart: %i \n", hab[k].etageDepart);	
 			fprintf(debugFile,"etage cible: %i \n", hab[k].etageCible);
-		}
+		}*/
 	}
-	fclose(debugFile);
+	/*fclose(debugFile);*/
 	return 0;
 }
